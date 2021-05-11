@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ClientSide.ServerSettings
+namespace ClientSide
 {
     public static class ServerSettings
     {

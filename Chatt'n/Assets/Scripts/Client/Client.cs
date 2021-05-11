@@ -5,7 +5,7 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 
-namespace ClientSide.Client
+namespace ClientSide
 {
     public class Client
     {
