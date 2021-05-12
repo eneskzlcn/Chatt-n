@@ -2,7 +2,7 @@
 using System.Net;
 using System.Net.Sockets;
 using UnityEngine;
-
+    
 namespace ClientSide
 {
     public class Client
