@@ -10,5 +10,13 @@ namespace ServerSide
         {
             Server.Start();
         }
+
+        public void printClientCount()
+        {
+            for(int i = 0;i < Server.clients.Count;i++)
+            {
+                Debug.Log("Key: "+i+", _clientID = "+Server.clients[i]._clientID);
+            }
+        }
     }
 }
