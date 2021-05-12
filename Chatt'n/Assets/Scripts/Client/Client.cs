@@ -23,7 +23,11 @@ namespace ClientSide
         public void onBeginConnect(IAsyncResult ar)
         {
             socket.EndConnect(ar);
-            Debug.Log("Connected to the server");
+            if(socket.Connected)   
+            {
+                Debug.Log("Connected to the server");
+            }
+            
         }
     }
 }
