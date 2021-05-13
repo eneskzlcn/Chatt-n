@@ -10,6 +10,6 @@ namespace Messages
         public Message_Type type;
         public string content; // maybe another struct (json form) .
     }
-
+    
     
 }
