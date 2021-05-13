@@ -3,6 +3,8 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using UnityEngine;
+using Messages;
+using Newtonsoft.Json;
 // The purpose of thiss class is represent any client as a class in server-side
 namespace ServerSide
 {
@@ -15,15 +17,12 @@ namespace ServerSide
         public byte[] _buffer;
 
         //this id will allow us to reach the client from the dic in server directly ( mapped with ids).
-        public int _clientID;
-        
         public string _userName;
 
-        public SClient(int clientID,TcpClient socket )
+        public SClient(TcpClient socket )
         {
             // initializing socket and io stream.
             this.socket = socket;
-            this._clientID = clientID;
             this._stream = socket.GetStream();
             //initializing buffer.
             this.socket.ReceiveBufferSize = ClientSettings.BUFFER_SIZE;
@@ -44,9 +43,9 @@ namespace ServerSide
                 //EndRead func. returns the byte length of incoming data. If there is no data incoming or there is
                 //an error occured on reading, then this value will be zero or lower than zero. So we can control
                 //is the reading succeded with this.
-                int _incomingDataLength = _stream.EndRead(ar);
+                int incomingDataLength = _stream.EndRead(ar);
 
-                if(_incomingDataLength <= 0 )
+                if(incomingDataLength <= 0 )
                 {
                     //There is an error occured
                     //Disconnect or break
@@ -58,11 +57,22 @@ namespace ServerSide
                 // the _buffer always accepts data amount of our BUFFER_SIZE but the incoming data not
                 //always equal to BUFFER_SIZE. So we starts an array that exactly the same length with given
                 //data = _data.
-                byte[] _data = new byte[_incomingDataLength];
+                byte[] data = new byte[incomingDataLength];
                 //Array.Copy provides that the empty or broken bytes not being copied to the new array _data
-                Array.Copy(_buffer,_data,_incomingDataLength);
-                string _incomingString = Encoding.UTF8.GetString(_buffer);
-                Debug.Log("I am SClient. My id:"+this._clientID+". Coming string : "+_incomingString);
+                Array.Copy(_buffer,data,incomingDataLength);
+                string incomingString = Encoding.UTF8.GetString(_buffer);
+                // then we have the message struct which has type and a content(json);
+                Message message = JsonConvert.DeserializeObject<Message>(incomingString);
+                switch(message.type)
+                {
+                    case Message_Type.CONNECTED:
+                        break;
+
+                    case Message_Type.USERNAME:
+                        this._userName = message.content;
+                        Debug.Log("My username is : "+ this._userName);
+                        break;
+                }
             }
             catch (System.Exception)
             {

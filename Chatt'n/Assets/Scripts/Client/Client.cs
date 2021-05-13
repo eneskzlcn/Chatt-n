@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using UnityEngine;
 using Newtonsoft.Json;
 using System.Text;
+using Messages;
 
 namespace ClientSide
 {
@@ -60,10 +61,18 @@ namespace ClientSide
                 byte[] data = new byte[incomingDataLength];
                 //Array.Copy provides that the empty or broken bytes not being copied to the new array _data
                 Array.Copy(_buffer,data,incomingDataLength);
+                // then convert to string which gonna come in json format
                 string incomingString = Encoding.UTF8.GetString(_buffer);
-                Debug.Log("Serverdan gelen mesaj = "+incomingString);
-                SendMessage("Hoşbulduk!");
-                
+                // then we have the message struct which has type and a content(json);
+                Message message = JsonConvert.DeserializeObject<Message>(incomingString);
+                switch(message.type)
+                {
+                    case Message_Type.CONNECTED:
+                        break;
+                    
+                    case Message_Type.DISCONNECTED:
+                        break;
+                }
                 //cast to message struct than ...
 
             }
