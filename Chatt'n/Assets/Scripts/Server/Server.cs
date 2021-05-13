@@ -25,10 +25,8 @@ namespace ServerSide
         {
             Debug.Log("Started to accept new socket...");
             TcpClient newSocket = serverListener.EndAcceptTcpClient(ar);
-            SClient newClient = new SClient(clients.Count,newSocket);
+            SClient newClient = new SClient(newSocket);
             newClient.ReadIncomingData();
-            newClient.SendMessage("Hosgeldin!");
-            Debug.Log($"Accepted Client : {newClient.socket.Client.RemoteEndPoint}");
             // after a client accepted or rejected we must continue for waiting for new clients. So,
             // if we use begin accept method in here then there will be a loop never stops waiting for new clients
             clients.Add(newClient);
