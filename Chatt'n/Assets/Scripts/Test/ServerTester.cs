@@ -1,11 +1,9 @@
 using UnityEngine;
+using ServerSide;
 
-
-namespace ServerSide
+namespace Test
 {
     public class ServerTester : MonoBehaviour {
-        
-
         public void Awake()
         {
             Server.Start();
