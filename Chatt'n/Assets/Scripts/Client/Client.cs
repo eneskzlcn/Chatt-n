@@ -21,10 +21,10 @@ namespace ClientSide
         }
         public void Connect()
         {
-            socket.BeginConnect(ServerSettings.HOST,ServerSettings.PORT,new AsyncCallback(onBeginConnect),null);
+            socket.BeginConnect(ServerSettings.HOST,ServerSettings.PORT,OnConnectingToServer,null);
         }
 
-        public void onBeginConnect(IAsyncResult ar)
+        public void OnConnectingToServer(IAsyncResult ar)
         {
             socket.EndConnect(ar);
             if(socket.Connected)   
@@ -36,9 +36,39 @@ namespace ClientSide
             
         }
 
-        public void OnReadingData()
+        public void OnReadingData(IAsyncResult ar)
         {
+           try
+            {
+                //EndRead func. returns the byte length of incoming data. If there is no data incoming or there is
+                //an error occured on reading, then this value will be zero or lower than zero. So we can control
+                //is the reading succeded with this.
+                int _incomingDataLength = _stream.EndRead(ar);
 
+                if(_incomingDataLength <= 0 )
+                {
+                    //There is an error occured
+                    //Disconnect or break
+                    Debug.Log("There is an error occured on reading.");
+
+                    return;
+                }
+                //we initalize a temp data array because of the _buffer not completely full or clear.
+                // the _buffer always accepts data amount of our BUFFER_SIZE but the incoming data not
+                //always equal to BUFFER_SIZE. So we starts an array that exactly the same length with given
+                //data = _data.
+                byte[] _data = new byte[_incomingDataLength];
+                //Array.Copy provides that the empty or broken bytes not being copied to the new array _data
+                Array.Copy(_buffer,_data,_incomingDataLength);
+                string _incomingString = Encoding.UTF8.GetString(_buffer);
+                //cast to message struct than ...
+
+            }
+             catch (System.Exception)
+            {
+                
+                Debug.Log("System.Exception SClient :70");
+            }
         }
         public void SendMessage(string message)
         {
@@ -46,7 +76,7 @@ namespace ClientSide
             byte[] sendingData = Encoding.UTF8.GetBytes(message);
             try
             {
-                _stream.BeginWrite(sendingData,0,sendingData.Length,onBeginWrite,null);
+                _stream.BeginWrite(sendingData,0,sendingData.Length,OnWritingData,null);
             }
             catch (System.Exception)
             {
@@ -58,7 +88,7 @@ namespace ClientSide
            //Messagem deserializedProduct = JsonConvert.DeserializeObject<Messagem>(output);
         }
 
-        public void onBeginWrite(IAsyncResult ar)
+        public void OnWritingData(IAsyncResult ar)
         {
             _stream.EndWrite(ar);
         }
