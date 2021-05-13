@@ -13,7 +13,7 @@ namespace Test
         {
             for(int i = 0;i < Server.clients.Count;i++)
             {
-                Debug.Log("Key: "+i+", _clientID = "+Server.clients[i]._clientID);
+                Debug.Log("Key: "+i + ", User Name: "+ Server.clients[i]._userName);
             }
         }
     }
