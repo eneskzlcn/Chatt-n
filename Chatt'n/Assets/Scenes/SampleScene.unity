@@ -464,6 +464,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e59ada52a319b6043bc278b7af82e210, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clientPrefab: {fileID: 8811822826198913054, guid: 08750498d5c30294babdb3001085e1d3,
+    type: 3}
 --- !u!114 &844977257
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -508,7 +510,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 844977256}
-        m_MethodName: Connect
+        m_MethodName: CreateNewClient
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
