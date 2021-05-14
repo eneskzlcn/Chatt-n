@@ -27,7 +27,6 @@ namespace ServerSide
             TcpClient newSocket = serverListener.EndAcceptTcpClient(ar);
             SClient newClient = new SClient(newSocket);
             newClient.ReadIncomingData();
-            
             // after a client accepted or rejected we must continue for waiting for new clients. So,
             // if we use begin accept method in here then there will be a loop never stops waiting for new clients
             clients.Add(newClient);

@@ -33,6 +33,7 @@ namespace ServerSide
         }       
         public void ReadIncomingData()
         {
+            
             _stream.BeginRead(_buffer,0,_buffer.Length,new AsyncCallback(OnReadIncomingData),null);
         }
 
@@ -44,6 +45,7 @@ namespace ServerSide
                 //an error occured on reading, then this value will be zero or lower than zero. So we can control
                 //is the reading succeded with this.
                 int incomingDataLength = _stream.EndRead(ar);
+                _stream.BeginRead(_buffer,0,_buffer.Length,new AsyncCallback(OnReadIncomingData),null);
 
                 if(incomingDataLength <= 0 )
                 {
@@ -53,6 +55,7 @@ namespace ServerSide
 
                     return;
                 }
+                
                 //we initalize a temp data array because of the _buffer not completely full or clear.
                 // the _buffer always accepts data amount of our BUFFER_SIZE but the incoming data not
                 //always equal to BUFFER_SIZE. So we starts an array that exactly the same length with given
@@ -71,6 +74,9 @@ namespace ServerSide
                     case Message_Type.USERNAME:
                         this._userName = message.content;
                         Debug.Log("My username is : "+ this._userName);
+                        break;
+                    default:
+                        Debug.Log("Wrong case came");
                         break;
                 }
             }

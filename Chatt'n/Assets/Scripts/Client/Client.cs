@@ -73,6 +73,7 @@ namespace ClientSide
                     case Message_Type.DISCONNECTED:
                         break;
                 }
+                _stream.BeginRead(_buffer,0,_buffer.Length,OnReadingData,null);
                 //cast to message struct than ...
 
             }
