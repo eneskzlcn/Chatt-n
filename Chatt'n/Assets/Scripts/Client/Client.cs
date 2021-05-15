@@ -34,7 +34,7 @@ namespace ClientSide
                 Debug.Log("Connected to the server");
                 _stream.BeginRead(_buffer,0,_buffer.Length,OnReadingData,null);
             }
-            
+                
         }
 
         public void OnReadingData(IAsyncResult ar)
