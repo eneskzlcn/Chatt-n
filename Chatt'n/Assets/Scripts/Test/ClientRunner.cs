@@ -9,13 +9,13 @@ namespace Test
     public class ClientRunner : MonoBehaviour {
       
 
-        public UsernameKeeper usernameKeeper; 
-        public void Awake()
+        public Text inputField; 
+        public void Connect()
         {
             Client.Connect();
             Message message = new Message();
             message.type = Message_Type.USERNAME;
-            message.content = usernameKeeper.userName;
+            message.content = inputField.text.ToString();
             string json_message = JsonConvert.SerializeObject(message);
             Client.SendMessage(json_message);
         }
