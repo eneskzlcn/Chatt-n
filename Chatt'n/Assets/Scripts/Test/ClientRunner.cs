@@ -7,18 +7,17 @@ using Newtonsoft.Json;
 namespace Test
 {
     public class ClientRunner : MonoBehaviour {
-        Client client;
+      
 
         public UsernameKeeper usernameKeeper; 
         public void Awake()
         {
-            client = new Client();
-            client.Connect();
+            Client.Connect();
             Message message = new Message();
             message.type = Message_Type.USERNAME;
             message.content = usernameKeeper.userName;
             string json_message = JsonConvert.SerializeObject(message);
-            client.SendMessage(json_message);
+            Client.SendMessage(json_message);
         }
     }
 }

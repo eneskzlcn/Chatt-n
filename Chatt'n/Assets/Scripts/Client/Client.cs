@@ -8,24 +8,19 @@ using Messages;
 
 namespace ClientSide
 {
-    public class Client
+    public static class Client
     {
-        private TcpClient socket;
+        private static TcpClient socket = new TcpClient();
 
-        private NetworkStream _stream;
+        private static NetworkStream _stream;
 
-        private byte[] _buffer;
-        public Client()
-        {
-            socket = new TcpClient();
-            _buffer = new byte[ClientSettings.BUFFER_SIZE];
-        }
-        public void Connect()
+        private static byte[] _buffer = new byte[ClientSettings.BUFFER_SIZE];
+        public static void Connect()
         {
             socket.BeginConnect(ServerSettings.HOST,ServerSettings.PORT,OnConnectingToServer,null);
         }
 
-        public void OnConnectingToServer(IAsyncResult ar)
+        private static void OnConnectingToServer(IAsyncResult ar)
         {
             socket.EndConnect(ar);
             if(socket.Connected)   
@@ -34,10 +29,10 @@ namespace ClientSide
                 Debug.Log("Connected to the server");
                 _stream.BeginRead(_buffer,0,_buffer.Length,OnReadingData,null);
             }
-                
+
         }
 
-        public void OnReadingData(IAsyncResult ar)
+        private static void OnReadingData(IAsyncResult ar)
         {
            try
             {
@@ -83,7 +78,7 @@ namespace ClientSide
                 Debug.Log("System.Exception SClient :70");
             }
         }
-        public void SendMessage(string message)
+        public static void SendMessage(string message)
         {
             //converted the json to byte array to send...
             byte[] sendingData = Encoding.UTF8.GetBytes(message);
@@ -101,7 +96,7 @@ namespace ClientSide
            //Messagem deserializedProduct = JsonConvert.DeserializeObject<Messagem>(output);
         }
 
-        public void OnSendingData(IAsyncResult ar)
+        private static void OnSendingData(IAsyncResult ar)
         {
             _stream.EndWrite(ar);
         }
