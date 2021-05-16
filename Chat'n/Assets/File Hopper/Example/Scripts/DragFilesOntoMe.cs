@@ -11,6 +11,7 @@ public class DragFilesOntoMe : MonoBehaviour {
 	[SerializeField] FileHopper m_fileHopper;
 	[SerializeField] Text m_text;
 
+	[SerializeField] Text files_text;	
 	// Use this for initialization
 	void Start () { 
 		m_fileHopper.OnFilesDropped.AddListener(DroppedFilesOnMe);
@@ -18,6 +19,10 @@ public class DragFilesOntoMe : MonoBehaviour {
 
 	void DroppedFilesOnMe(List<string> files, Vector2 pos)
 	{
+		foreach (string item in files)
+		{
+			files_text.text  = files_text.text + "\n"+item;
+		}
 		//See if mouse is inside of Rect of this RectTransform while dropping files
 		if(RectTransformUtility.RectangleContainsScreenPoint(transform as RectTransform, pos))
 		{
