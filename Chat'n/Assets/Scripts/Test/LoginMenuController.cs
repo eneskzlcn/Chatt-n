@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using ClientSide;
 using Messages;
 using Newtonsoft.Json;
+using UnityEngine.SceneManagement;
 
 public class LoginMenuController : MonoBehaviour {
     public Button _loginButton;
@@ -27,5 +28,10 @@ public class LoginMenuController : MonoBehaviour {
         message.content = _userName.text.ToString();
         string json_message = JsonConvert.SerializeObject(message);
         Client.SendMessage(json_message);
+    }
+
+    public void LoadNextScene()
+    {
+        SceneManager.LoadScene("InGame");
     }
 }
