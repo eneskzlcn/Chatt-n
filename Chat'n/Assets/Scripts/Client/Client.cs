@@ -29,6 +29,10 @@ namespace ClientSide
                 Debug.Log("Connected to the server");
                 _stream.BeginRead(_buffer,0,_buffer.Length,OnReadingData,null);
             }
+            else
+            {
+                Debug.Log("There is an error occured when connecting to the server. ");
+            }
 
         }
 

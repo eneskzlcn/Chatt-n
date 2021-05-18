@@ -18,12 +18,12 @@ namespace Server
         {
             serverListener.Start();
             Console.WriteLine("Server started");
+            Console.WriteLine("Started to accept new socket...");
             serverListener.BeginAcceptTcpClient(OnAcceptingTcpClient, null);
         }
 
         private static void OnAcceptingTcpClient(IAsyncResult ar)
         {
-            Console.WriteLine("Started to accept new socket...");
             TcpClient newSocket = serverListener.EndAcceptTcpClient(ar);
             SClient newClient = new SClient(newSocket);
             newClient.ReadIncomingData();
