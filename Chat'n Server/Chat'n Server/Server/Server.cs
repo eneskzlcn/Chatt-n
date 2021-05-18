@@ -25,13 +25,17 @@ namespace Server
         private static void OnAcceptingTcpClient(IAsyncResult ar)
         {
             TcpClient newSocket = serverListener.EndAcceptTcpClient(ar);
+            if (newSocket == null)
+            {
+                Console.WriteLine("Null bir socket geldi.");
+                return;   
+            }
             SClient newClient = new SClient(newSocket);
             newClient.ReadIncomingData();
             // after a client accepted or rejected we must continue for waiting for new clients. So,
             // if we use begin accept method in here then there will be a loop never stops waiting for new clients
             clients.Add(newClient);
             serverListener.BeginAcceptTcpClient(OnAcceptingTcpClient, null);
-
         }
     }
 }

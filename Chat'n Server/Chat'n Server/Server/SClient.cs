@@ -44,17 +44,15 @@ namespace Server
                 //an error occured on reading, then this value will be zero or lower than zero. So we can control
                 //is the reading succeded with this.
                 int incomingDataLength = _stream.EndRead(ar);
-                _stream.BeginRead(_buffer, 0, _buffer.Length, new AsyncCallback(OnReadIncomingData), null);
-
                 if (incomingDataLength <= 0)
                 {
                     //There is an error occured
                     //Disconnect or break
-                    Console.WriteLine("There is an error occured on reading.");
-
+                    Console.WriteLine("Disconnected :53");
+                    Disconnect();
                     return;
                 }
-
+                _stream.BeginRead(_buffer, 0, _buffer.Length, new AsyncCallback(OnReadIncomingData), null);
                 //we initalize a temp data array because of the _buffer not completely full or clear.
                 // the _buffer always accepts data amount of our BUFFER_SIZE but the incoming data not
                 //always equal to BUFFER_SIZE. So we starts an array that exactly the same length with given
@@ -82,7 +80,8 @@ namespace Server
             catch (System.Exception)
             {
 
-                Console.WriteLine("System.Exception SClient :70");
+                Console.WriteLine("Disconnected :85");
+                Disconnect();
             }
         }
         public void SendMessage(string message)
@@ -93,6 +92,14 @@ namespace Server
         public void OnSendingData(IAsyncResult ar)
         {
             _stream.EndWrite(ar);
+        }
+        public void Disconnect()
+        {
+
+            _stream.Close();
+            this.socket.Close();
+            Server.clients.Remove(this);
+            
         }
     }
 }
