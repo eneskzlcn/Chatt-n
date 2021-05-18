@@ -5,12 +5,13 @@ using UnityEngine;
 using Newtonsoft.Json;
 using System.Text;
 using Messages;
+using UnityEngine.SceneManagement;
 
 namespace ClientSide
 {
     public static class Client
     {
-        private static TcpClient socket = new TcpClient();
+        public static TcpClient socket = new TcpClient();
 
         private static NetworkStream _stream;
 
@@ -28,6 +29,7 @@ namespace ClientSide
                 _stream = socket.GetStream();
                 Debug.Log("Connected to the server");
                 _stream.BeginRead(_buffer,0,_buffer.Length,OnReadingData,null);
+              
             }
             else
             {
@@ -67,6 +69,7 @@ namespace ClientSide
                 switch(message.type)
                 {
                     case Message_Type.CONNECTED:
+
                         break;
                     
                     case Message_Type.DISCONNECTED:
