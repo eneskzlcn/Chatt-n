@@ -2,43 +2,53 @@
 using System.Net;
 using System.Net.Sockets;
 using UnityEngine;
-using Newtonsoft.Json;
+using UnityEngine.UI;
 using System.Text;
 using Messages;
-using UnityEngine.SceneManagement;
 
 namespace ClientSide
 {
-    public static class Client
+    public class Client : MonoBehaviour
     {
-        public static TcpClient socket = new TcpClient();
+        public  TcpClient socket = new TcpClient();
 
-        private static NetworkStream _stream;
+        private  NetworkStream _stream;
 
-        private static byte[] _buffer = new byte[ClientSettings.BUFFER_SIZE];
-        public static void Connect()
+        private  byte[] _buffer = new byte[ClientSettings.BUFFER_SIZE];
+
+        public LoginMenuController loginMenuController;
+
+        public MenuAccessManagement menuAccessManagement;
+        
+        public void Connect()
         {
             socket.BeginConnect(ServerSettings.HOST,ServerSettings.PORT,OnConnectingToServer,null);
         }
 
-        private static void OnConnectingToServer(IAsyncResult ar)
+        private void OnConnectingToServer(IAsyncResult ar)
         {
             socket.EndConnect(ar);
             if(socket.Connected)   
             {
                 _stream = socket.GetStream();
-                Debug.Log("Connected to the server");
+                Message message = new Message();
+                message.type = Message_Type.USERNAME;
+                message.content = loginMenuController._userName.text.ToString();
+                string json_message = JsonUtility.ToJson(message);
+                this.Send(json_message);
                 _stream.BeginRead(_buffer,0,_buffer.Length,OnReadingData,null);
+                menuAccessManagement.getMenu("Login").SetActive(false);
+                menuAccessManagement.getMenu("Main").SetActive(true);
               
             }
             else
             {
-                Debug.Log("There is an error occured when connecting to the server. ");
+                Debug.Log("Cannt connect to the server");
             }
 
         }
 
-        private static void OnReadingData(IAsyncResult ar)
+        private void OnReadingData(IAsyncResult ar)
         {
            try
             {
@@ -65,18 +75,17 @@ namespace ClientSide
                 // then convert to string which gonna come in json format
                 string incomingString = Encoding.UTF8.GetString(_buffer);
                 // then we have the message struct which has type and a content(json);
-                Message message = JsonConvert.DeserializeObject<Message>(incomingString);
+                Message message = JsonUtility.FromJson<Message>(incomingString);
                 switch(message.type)
                 {
                     case Message_Type.CONNECTED:
 
                         break;
-                    
                     case Message_Type.DISCONNECTED:
                         break;
                 }
                 _stream.BeginRead(_buffer,0,_buffer.Length,OnReadingData,null);
-                //cast to message struct than ...
+                //cast to message struct than...
 
             }
              catch (System.Exception)
@@ -85,25 +94,21 @@ namespace ClientSide
                 Debug.Log("System.Exception SClient :70");
             }
         }
-        public static void SendMessage(string message)
+        public void Send(string message)
         {
             //converted the json to byte array to send...
             byte[] sendingData = Encoding.UTF8.GetBytes(message);
             try
             {
-                _stream.BeginWrite(sendingData,0,sendingData.Length,OnSendingData,null);
+                _stream.BeginWrite(sendingData,0,sendingData.Length,OnSendingData,null);  
             }
             catch (System.Exception)
             {
                 // disconnect or sth.
                 return;     
             }
-            
-            //  string output = JsonConvert.SerializeObject(m);
-           //Messagem deserializedProduct = JsonConvert.DeserializeObject<Messagem>(output);
         }
-
-        private static void OnSendingData(IAsyncResult ar)
+        private void OnSendingData(IAsyncResult ar)
         {
             _stream.EndWrite(ar);
         }

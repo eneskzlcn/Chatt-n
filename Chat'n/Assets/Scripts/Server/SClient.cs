@@ -4,7 +4,6 @@ using System.Net.Sockets;
 using System.Text;
 using UnityEngine;
 using Messages;
-using Newtonsoft.Json;
 // The purpose of thiss class is represent any client as a class in server-side
 namespace ServerSide
 {
@@ -65,7 +64,7 @@ namespace ServerSide
                 Array.Copy(_buffer,data,incomingDataLength);
                 string incomingString = Encoding.UTF8.GetString(_buffer);
                 // then we have the message struct which has type and a content(json);
-                Message message = JsonConvert.DeserializeObject<Message>(incomingString);
+                Message message = JsonUtility.FromJson<Message>(incomingString);
                 switch(message.type)
                 {
                     case Message_Type.CONNECTED:

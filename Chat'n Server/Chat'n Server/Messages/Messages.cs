@@ -13,4 +13,8 @@ namespace Messages
         public Message_Type type;
         public string content; // maybe another struct (json form) .
     }
+    public class Exs
+    {
+        Message message;
+    }
 }

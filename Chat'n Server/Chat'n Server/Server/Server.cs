@@ -17,7 +17,7 @@ namespace Server
         public static void Start()
         {
             serverListener.Start();
-            Console.WriteLine("Server started");
+            Console.WriteLine("Server started");    
             Console.WriteLine("Started to accept new socket...");
             serverListener.BeginAcceptTcpClient(OnAcceptingTcpClient, null);
         }
