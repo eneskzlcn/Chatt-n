@@ -13,7 +13,7 @@ namespace Server
         //TcpListener starts a listener that listends for incoming clients.
         private static TcpListener serverListener = new TcpListener(IPAddress.Any, ServerSettings.PORT);
         public static List<SClient> clients = new List<SClient>();
-
+        public static List<Room> rooms = new List<Room>();
         public static void Start()
         {
             serverListener.Start();

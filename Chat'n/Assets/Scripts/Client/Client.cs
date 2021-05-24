@@ -14,11 +14,11 @@ namespace ClientSide
 
         private  NetworkStream _stream;
 
+        private string userName;
+
         private  byte[] _buffer = new byte[ClientSettings.BUFFER_SIZE];
 
         public LoginMenuController loginMenuController;
-
-        public MenuAccessManagement menuAccessManagement;
         
         public void Connect()
         {
@@ -30,18 +30,16 @@ namespace ClientSide
             socket.EndConnect(ar);
             if(socket.Connected)   
             {
-               
-                Debug.Log("FLAG 1");
+                //if connect successfully then get the stream for io ops.
                 _stream = socket.GetStream();
-                Debug.Log("FLAG 2");
+                //send the chosen username to server to keep it as json message.
                 Message message = new Message();
                 message.type = Message_Type.USERNAME;
                 message.content = loginMenuController._userName.text.ToString();
-                Debug.Log("FLAG 3");
+                userName = loginMenuController._userName.text.ToString();
                 string json_message = JsonUtility.ToJson(message);
                 this.Send(json_message);
-                Debug.Log("FLAG 4");
-                Debug.Log("FLAG 5");
+
                 _stream.BeginRead(_buffer,0,_buffer.Length,OnReadingData,null);
             }
             else
@@ -110,6 +108,21 @@ namespace ClientSide
                 // disconnect or sth.
                 return;     
             }
+        }
+        public void CreateRoomRequest(string roomName)
+        {
+            // this is the content of the message actually. will be kept as json.
+            CreateRoomMessage crm = new CreateRoomMessage();
+            crm.creatorName = this.userName;
+            crm.roomName = roomName;
+
+            Message m = new Message();
+            m.type = Message_Type.CREATE_ROOM;
+            m.content = JsonUtility.ToJson(crm);
+
+            string message = JsonUtility.ToJson(m);
+
+            Send(message);
         }
         private void OnSendingData(IAsyncResult ar)
         {
