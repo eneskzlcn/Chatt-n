@@ -399,7 +399,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 79079928}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 598932950}
+        m_MethodName: CreateRoom
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &79079928
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1245,6 +1256,7 @@ GameObject:
   - component: {fileID: 598932947}
   - component: {fileID: 598932949}
   - component: {fileID: 598932948}
+  - component: {fileID: 598932950}
   m_Layer: 5
   m_Name: CreateRoomPanel
   m_TagString: Untagged
@@ -1312,6 +1324,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 598932946}
   m_CullTransparentMesh: 0
+--- !u!114 &598932950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 598932946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a89edfb30fa3dfd47beec172340d972a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  roomNameINP: {fileID: 1070783190}
+  capacityINP: {fileID: 1696202346}
+  client: {fileID: 230777539}
 --- !u!1 &609126918
 GameObject:
   m_ObjectHideFlags: 0
@@ -1330,7 +1357,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &609126919
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2300,7 +2327,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1557669003
 RectTransform:
   m_ObjectHideFlags: 0

@@ -109,13 +109,13 @@ namespace ClientSide
                 return;     
             }
         }
-        public void CreateRoomRequest(string roomName)
+        public void CreateRoomRequest(string roomName, int capacity)
         {
             // this is the content of the message actually. will be kept as json.
             CreateRoomMessage crm = new CreateRoomMessage();
             crm.creatorName = this.userName;
             crm.roomName = roomName;
-
+            crm.capacity = capacity;
             Message m = new Message();
             m.type = Message_Type.CREATE_ROOM;
             m.content = JsonUtility.ToJson(crm);

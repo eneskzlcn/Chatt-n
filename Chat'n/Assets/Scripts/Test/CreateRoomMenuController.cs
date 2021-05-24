@@ -10,6 +10,8 @@ public class CreateRoomMenuController : MonoBehaviour {
 
     public void CreateRoom()
     {
-
+        int capacity = (int)capacityINP.value;
+        string roomName =roomNameINP.text.ToString();
+        client.CreateRoomRequest(roomName,capacity);
     }
 }

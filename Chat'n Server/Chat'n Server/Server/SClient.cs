@@ -75,7 +75,7 @@ namespace Server
                     case Message_Type.CREATE_ROOM:
                         Room room;
                         CreateRoomMessage crm = JsonConvert.DeserializeObject<CreateRoomMessage>(message.content);
-                        room = new Room(crm.roomName, crm.creatorName);
+                        room = new Room(crm.roomName, crm.creatorName,crm.capacity);
                         Server.rooms.Add(room);
                         Console.WriteLine("Room created with name:" + room.name + " , creator:" + crm.creatorName);
                         break;

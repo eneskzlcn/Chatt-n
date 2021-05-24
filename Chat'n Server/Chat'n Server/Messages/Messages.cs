@@ -17,5 +17,6 @@ namespace Messages
     {
         public string roomName;
         public string creatorName;
+        public int capacity;
     }
 }
