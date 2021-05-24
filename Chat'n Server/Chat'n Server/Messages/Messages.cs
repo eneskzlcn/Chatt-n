@@ -6,15 +6,16 @@ namespace Messages
 {
     public enum Message_Type
     {
-        CONNECTED, DISCONNECTED, USERNAME
+        CONNECTED, DISCONNECTED, USERNAME, CREATE_ROOM
     }
     public struct Message
     {
         public Message_Type type;
         public string content; // maybe another struct (json form) .
     }
-    public class Exs
+    public struct CreateRoomMessage
     {
-        Message message;
+        public string roomName;
+        public string creatorName;
     }
 }

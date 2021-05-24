@@ -12,7 +12,6 @@ public class LoginMenuController : MonoBehaviour {
     public Text _userName;
 
     public Text loginButtonText;
-    public MenuAccessManagement menuAccessManagement;
 
     public Text _infomationText;
     public Client client;
@@ -27,9 +26,5 @@ public class LoginMenuController : MonoBehaviour {
         {
             _loginButton.interactable = false;
         }
-    }
-    public void Connect()
-    {
-        client.Connect();
     }
 }
