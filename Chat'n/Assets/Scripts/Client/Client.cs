@@ -30,16 +30,19 @@ namespace ClientSide
             socket.EndConnect(ar);
             if(socket.Connected)   
             {
+               
+                Debug.Log("FLAG 1");
                 _stream = socket.GetStream();
+                Debug.Log("FLAG 2");
                 Message message = new Message();
                 message.type = Message_Type.USERNAME;
                 message.content = loginMenuController._userName.text.ToString();
+                Debug.Log("FLAG 3");
                 string json_message = JsonUtility.ToJson(message);
                 this.Send(json_message);
+                Debug.Log("FLAG 4");
+                Debug.Log("FLAG 5");
                 _stream.BeginRead(_buffer,0,_buffer.Length,OnReadingData,null);
-                menuAccessManagement.getMenu("Login").SetActive(false);
-                menuAccessManagement.getMenu("Main").SetActive(true);
-              
             }
             else
             {
