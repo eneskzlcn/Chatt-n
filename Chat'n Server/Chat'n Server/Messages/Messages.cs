@@ -6,7 +6,7 @@ namespace Messages
 {
     public enum Message_Type
     {
-        CONNECTED, DISCONNECTED, USERNAME, CREATE_ROOM
+        CONNECTED, DISCONNECTED, USERNAME, CREATE_ROOM, ALL_USERNAMES_LIST
     }
     public struct Message
     {

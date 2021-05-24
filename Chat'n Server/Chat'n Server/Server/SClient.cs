@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -65,9 +66,25 @@ namespace Server
                 Message message = JsonConvert.DeserializeObject<Message>(incomingString);
                 switch (message.type)
                 {
-                    case Message_Type.CONNECTED:
-                        break;
+                    case Message_Type.ALL_USERNAMES_LIST:
+                        //making a username list from current sclients
+                        List<string> userNames = new List<string>();
+                        foreach(SClient sclient in Server.clients)
+                        {
+                            userNames.Add(sclient._userName);
+                        }
+                        //convert this names to json to keep in message content
+                        string jsonUserNames = JsonConvert.SerializeObject(userNames);
 
+                        //message object that contain this list
+                        Message m = new Message();
+                        m.type = Message_Type.ALL_USERNAMES_LIST;
+                        m.content = jsonUserNames;
+
+                        string messageToBeSend = JsonConvert.SerializeObject(m);
+                        this.SendMessage(messageToBeSend);
+
+                        break;
                     case Message_Type.USERNAME:
                         this._userName = message.content;
                         Console.WriteLine("My username is : " + this._userName);

@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Text;
 using Messages;
+using System.Collections.Generic;
 
 namespace ClientSide
 {
@@ -44,11 +45,10 @@ namespace ClientSide
             }
             else
             {
-                Debug.Log("Cannt connect to the server");
+                Debug.Log("Can not connect to the server");
             }
 
         }
-
         private void OnReadingData(IAsyncResult ar)
         {
            try
@@ -84,6 +84,14 @@ namespace ClientSide
                         break;
                     case Message_Type.DISCONNECTED:
                         break;
+                    case Message_Type.ALL_USERNAMES_LIST:
+                        List<string> userNames;
+                        userNames = JsonUtility.FromJson<List<string>>(message.content);
+                        foreach(string item in userNames)
+                        {
+                            Debug.Log(item);
+                        }
+                        break;
                 }
                 _stream.BeginRead(_buffer,0,_buffer.Length,OnReadingData,null);
                 //cast to message struct than...
@@ -108,6 +116,13 @@ namespace ClientSide
                 // disconnect or sth.
                 return;     
             }
+        }
+        public void CreateAllUserNamesRequest()
+        {
+            Message msg = new Message();
+            msg.type = Message_Type.ALL_USERNAMES_LIST;
+            msg.content = "";
+            Send(JsonUtility.ToJson(msg));
         }
         public void CreateRoomRequest(string roomName, int capacity)
         {
