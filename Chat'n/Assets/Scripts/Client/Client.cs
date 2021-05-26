@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using System.Text;
 using Messages;
 using System.Collections.Generic;
+using InGameResources;
 
 namespace ClientSide
 {
@@ -17,7 +18,7 @@ namespace ClientSide
 
         private string userName;
 
-        private  byte[] _buffer = new byte[ClientSettings.BUFFER_SIZE];
+        private byte[] _buffer = new byte[ClientSettings.BUFFER_SIZE];
 
         public LoginMenuController loginMenuController;
         
@@ -51,21 +52,29 @@ namespace ClientSide
         }
         private void OnReadingData(IAsyncResult ar)
         {
+           int incomingDataLength = 0;
            try
             {
                 //EndRead func. returns the byte length of incoming data. If there is no data incoming or there is
                 //an error occured on reading, then this value will be zero or lower than zero. So we can control
                 //is the reading succeded with this.
-                int incomingDataLength = _stream.EndRead(ar);
-
+                incomingDataLength = _stream.EndRead(ar);
+                Debug.Log("No stream ending problem");
                 if(incomingDataLength <= 0 )
                 {
                     //There is an error occured
                     //Disconnect or break
                     Debug.Log("There is an error occured on reading.");
-
+            
                     return;
                 }
+                
+            }
+            catch (System.Exception)
+            {
+                
+                Debug.Log("Stream ending problem");
+            }
                 //we initalize a temp data array because of the _buffer not completely full or clear.
                 // the _buffer always accepts data amount of our BUFFER_SIZE but the incoming data not
                 //always equal to BUFFER_SIZE. So we starts an array that exactly the same length with given
@@ -75,8 +84,10 @@ namespace ClientSide
                 Array.Copy(_buffer,data,incomingDataLength);
                 // then convert to string which gonna come in json format
                 string incomingString = Encoding.UTF8.GetString(_buffer);
+                Debug.Log("Gelen incoming string:"+incomingString);
                 // then we have the message struct which has type and a content(json);
                 Message message = JsonUtility.FromJson<Message>(incomingString);
+                Debug.Log("Gelen mesajın tipi:" + message.type);
                 switch(message.type)
                 {
                     case Message_Type.CONNECTED:
@@ -85,23 +96,14 @@ namespace ClientSide
                     case Message_Type.DISCONNECTED:
                         break;
                     case Message_Type.ALL_USERNAMES_LIST:
-                        List<string> userNames;
-                        userNames = JsonUtility.FromJson<List<string>>(message.content);
-                        foreach(string item in userNames)
-                        {
-                            Debug.Log(item);
-                        }
+                         Debug.Log("ALL_USERNAME_LISTE case ine giridm");
+                        ResourceManager.setReadedUserNames(message.content.Split(','));                     
                         break;
                 }
+                _buffer = new byte[ClientSettings.BUFFER_SIZE];
                 _stream.BeginRead(_buffer,0,_buffer.Length,OnReadingData,null);
                 //cast to message struct than...
 
-            }
-             catch (System.Exception)
-            {
-                
-                Debug.Log("System.Exception SClient :70");
-            }
         }
         public void Send(string message)
         {
@@ -109,6 +111,8 @@ namespace ClientSide
             byte[] sendingData = Encoding.UTF8.GetBytes(message);
             try
             {
+                Debug.Log("Gönderdiğim mesaj:"+message);
+                Debug.Log("Uzunluğu:"+sendingData.Length);
                 _stream.BeginWrite(sendingData,0,sendingData.Length,OnSendingData,null);  
             }
             catch (System.Exception)
@@ -121,8 +125,9 @@ namespace ClientSide
         {
             Message msg = new Message();
             msg.type = Message_Type.ALL_USERNAMES_LIST;
-            msg.content = "";
-            Send(JsonUtility.ToJson(msg));
+            string json_message = JsonUtility.ToJson(msg);
+            Debug.Log(json_message);
+            Send(json_message);
         }
         public void CreateRoomRequest(string roomName, int capacity)
         {

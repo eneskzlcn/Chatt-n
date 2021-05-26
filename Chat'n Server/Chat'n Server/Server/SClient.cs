@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Text;
 using Messages;
 using Newtonsoft.Json;
+using Utilities;
 
 namespace Server
 {
@@ -27,24 +28,26 @@ namespace Server
             //initializing buffer.
             this.socket.ReceiveBufferSize = ClientSettings.BUFFER_SIZE;
             this.socket.SendBufferSize = ClientSettings.BUFFER_SIZE;
-            this._buffer = new byte[ClientSettings.BUFFER_SIZE];
-
-
         }
         public void ReadIncomingData()
         {
+            if(socket.Connected)
+            {
+                _buffer = new byte[ClientSettings.BUFFER_SIZE];
+                _stream.BeginRead(_buffer, 0, _buffer.Length, new AsyncCallback(OnReadIncomingData), null);
 
-            _stream.BeginRead(_buffer, 0, _buffer.Length, new AsyncCallback(OnReadIncomingData), null);
+            }
         }
 
         public void OnReadIncomingData(IAsyncResult ar)
         {
+            int incomingDataLength = 0;
             try
             {
                 //EndRead func. returns the byte length of incoming data. If there is no data incoming or there is
                 //an error occured on reading, then this value will be zero or lower than zero. So we can control
                 //is the reading succeded with this.
-                int incomingDataLength = _stream.EndRead(ar);
+                incomingDataLength = _stream.EndRead(ar);
                 if (incomingDataLength <= 0)
                 {
                     //There is an error occured
@@ -53,7 +56,12 @@ namespace Server
                     Disconnect();
                     return;
                 }
-                _stream.BeginRead(_buffer, 0, _buffer.Length, new AsyncCallback(OnReadIncomingData), null);
+            }
+            catch (System.Exception)
+            {
+                Console.WriteLine("Disconnected :85");
+                Disconnect();
+                }
                 //we initalize a temp data array because of the _buffer not completely full or clear.
                 // the _buffer always accepts data amount of our BUFFER_SIZE but the incoming data not
                 //always equal to BUFFER_SIZE. So we starts an array that exactly the same length with given
@@ -62,28 +70,39 @@ namespace Server
                 //Array.Copy provides that the empty or broken bytes not being copied to the new array _data
                 Array.Copy(_buffer, data, incomingDataLength);
                 string incomingString = Encoding.UTF8.GetString(_buffer);
-                // then we have the message struct which has type and a content(json);
+                Console.WriteLine("incoming stringi yziyom"+incomingString);
+            // then we have the message struct which has type and a content(json);
+                Console.WriteLine("gelen data lengthi:" + incomingDataLength);
                 Message message = JsonConvert.DeserializeObject<Message>(incomingString);
+                Console.WriteLine("Flag 1");
                 switch (message.type)
                 {
                     case Message_Type.ALL_USERNAMES_LIST:
                         //making a username list from current sclients
+                        Console.WriteLine("Flag 2");
+                        
                         List<string> userNames = new List<string>();
                         foreach(SClient sclient in Server.clients)
                         {
                             userNames.Add(sclient._userName);
                         }
+                        string[] names = Utilities.Utilities.ListToArray(userNames);
+                        Console.WriteLine("Flag 3");
                         //convert this names to json to keep in message content
-                        string jsonUserNames = JsonConvert.SerializeObject(userNames);
-
+                        string commaSeperatedNames = string.Join(",", names);
+                        //string jsonUserNames = JsonConvert.SerializeObject(commaSeperatedNames);
+                        Console.WriteLine("Flag 4");
+                        Console.WriteLine("Comma seperated array = " + commaSeperatedNames);
                         //message object that contain this list
                         Message m = new Message();
+                            
                         m.type = Message_Type.ALL_USERNAMES_LIST;
-                        m.content = jsonUserNames;
-
+                        m.content = commaSeperatedNames;
+                        Console.WriteLine("Flag 5");
                         string messageToBeSend = JsonConvert.SerializeObject(m);
+                        Console.WriteLine("Message to be send = " + messageToBeSend);
                         this.SendMessage(messageToBeSend);
-
+                        Console.WriteLine("Flag 6");
                         break;
                     case Message_Type.USERNAME:
                         this._userName = message.content;
@@ -100,13 +119,7 @@ namespace Server
                         Console.WriteLine("Wrong case came");
                         break;
                 }
-            }
-            catch (System.Exception)
-            {
-
-                Console.WriteLine("Disconnected :85");
-                Disconnect();
-            }
+            ReadIncomingData();
         }
         public void SendMessage(string message)
         {
@@ -119,7 +132,6 @@ namespace Server
         }
         public void Disconnect()
         {
-
             _stream.Close();
             this.socket.Close();
             Server.clients.Remove(this);
