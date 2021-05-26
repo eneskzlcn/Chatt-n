@@ -77,9 +77,26 @@ namespace Server
                 Console.WriteLine("Flag 1");
                 switch (message.type)
                 {
+                    case Message_Type.ALL_ROOMS_LIST:
+                        //making an empty list to keep room names...
+                        List<string> roomNames = new List<string>();
+                        foreach (Room sRoom in Server.rooms)
+                        {
+                            roomNames.Add(sRoom.name);
+                        }
+                        //convert this list to array to keep it right json form. ( list is broken when sending as message)
+                        string[] allRoomNames = Utilities.Utilities.ListToArray(roomNames);
+                        //content of the message will be comma seperated names...
+                        string commaSeperatedRoomNames = string.Join(",", allRoomNames);
+
+                        //creating the message to be send as json from string list
+                        Message allRoomsMessage = new Message();
+                        allRoomsMessage.type = Message_Type.ALL_ROOMS_LIST;
+                        allRoomsMessage.content = commaSeperatedRoomNames;
+                        string jsonRoomListMessage = JsonConvert.SerializeObject(allRoomsMessage);
+                        this.SendMessage(jsonRoomListMessage);
+                        break;
                     case Message_Type.ALL_USERNAMES_LIST:
-                        //making a username list from current sclients
-                        Console.WriteLine("Flag 2");
                         
                         List<string> userNames = new List<string>();
                         foreach(SClient sclient in Server.clients)
@@ -87,22 +104,14 @@ namespace Server
                             userNames.Add(sclient._userName);
                         }
                         string[] names = Utilities.Utilities.ListToArray(userNames);
-                        Console.WriteLine("Flag 3");
-                        //convert this names to json to keep in message content
                         string commaSeperatedNames = string.Join(",", names);
-                        //string jsonUserNames = JsonConvert.SerializeObject(commaSeperatedNames);
-                        Console.WriteLine("Flag 4");
-                        Console.WriteLine("Comma seperated array = " + commaSeperatedNames);
-                        //message object that contain this list
-                        Message m = new Message();
-                            
+
+                        Message m = new Message();    
                         m.type = Message_Type.ALL_USERNAMES_LIST;
                         m.content = commaSeperatedNames;
-                        Console.WriteLine("Flag 5");
+
                         string messageToBeSend = JsonConvert.SerializeObject(m);
-                        Console.WriteLine("Message to be send = " + messageToBeSend);
                         this.SendMessage(messageToBeSend);
-                        Console.WriteLine("Flag 6");
                         break;
                     case Message_Type.USERNAME:
                         this._userName = message.content;

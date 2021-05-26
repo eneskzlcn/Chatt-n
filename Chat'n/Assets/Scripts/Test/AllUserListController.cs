@@ -5,13 +5,10 @@ public class AllUserListController : MonoBehaviour {
 
 
         public GameObject chatContentPanel;
-
         public GameObject chatTextPrefab;
-
-        public string[] userNames = {"enes","ahmet","furk"};
         public void createUserList()
         {
-            //if(ResourceManager.getReadedUserNames() == null){return;}
+            if(ResourceManager.getReadedUserNames() == null){return;}
             foreach (Transform child in chatContentPanel.transform) {
                 GameObject.Destroy(child.gameObject);
             }

@@ -90,13 +90,13 @@ namespace ClientSide
                 Debug.Log("Gelen mesajın tipi:" + message.type);
                 switch(message.type)
                 {
-                    case Message_Type.CONNECTED:
-
+                    case Message_Type.ALL_ROOMS_LIST:
+                        Debug.Log("All rooms came");
+                        ResourceManager.setReadedRoomNames(message.content.Split(','));
                         break;
                     case Message_Type.DISCONNECTED:
                         break;
                     case Message_Type.ALL_USERNAMES_LIST:
-                         Debug.Log("ALL_USERNAME_LISTE case ine giridm");
                         ResourceManager.setReadedUserNames(message.content.Split(','));                     
                         break;
                 }
@@ -126,7 +126,6 @@ namespace ClientSide
             Message msg = new Message();
             msg.type = Message_Type.ALL_USERNAMES_LIST;
             string json_message = JsonUtility.ToJson(msg);
-            Debug.Log(json_message);
             Send(json_message);
         }
         public void CreateRoomRequest(string roomName, int capacity)
@@ -143,6 +142,13 @@ namespace ClientSide
             string message = JsonUtility.ToJson(m);
 
             Send(message);
+        }
+        public void CreateAllRoomNamesRequest()
+        {
+            Message m = new Message();
+            m.type = Message_Type.ALL_ROOMS_LIST;
+            string json_message = JsonUtility.ToJson(m);
+            Send(json_message);
         }
         private void OnSendingData(IAsyncResult ar)
         {
