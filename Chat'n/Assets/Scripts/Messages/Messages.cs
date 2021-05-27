@@ -29,6 +29,7 @@ namespace Messages
         public string roomName;
 
         public MessageContentType contentType;
+        
         public string senderName;
 
         public string content;

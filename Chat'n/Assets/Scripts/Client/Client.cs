@@ -16,7 +16,7 @@ namespace ClientSide
 
         private  NetworkStream _stream;
 
-        private string userName;
+        public string userName = "Enes";
 
         private byte[] _buffer = new byte[ClientSettings.BUFFER_SIZE];
 
