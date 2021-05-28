@@ -24,8 +24,10 @@ public class Server {
     public ServerSocket socket;
     public int port;
     public ListenConnectionRequestThread listenConnectionRequestThread;
-    public ClientRemovingControlThread removingControlThread;
+
     public static ArrayList<SClient> clients;
+    
+    public static ArrayList<Room> rooms;
 
     //lock mechanism for pairing thread. One client can match with one client at the same time. So we use the lock mechanism to provide
     //other clients not try to pair this client at the same time.
@@ -36,8 +38,8 @@ public class Server {
             this.port = port;
             this.socket = new ServerSocket(this.port);
             this.listenConnectionRequestThread = new ListenConnectionRequestThread(this);
-            removingControlThread = new ClientRemovingControlThread(this);
             this.clients = new ArrayList<SClient>();
+            this.rooms = new ArrayList<Room>();
             
         } catch (IOException ex) {
             System.out.println("There is an error occured when opening the server on port:" + this.port);

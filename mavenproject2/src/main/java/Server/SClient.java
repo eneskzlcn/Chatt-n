@@ -26,11 +26,8 @@ public class SClient {
     public ObjectInputStream cInput;
     public ObjectOutputStream cOutput;
     public ClientListenThread clientListenThread;
-    public SClient pair;
-    public boolean isPaired;
-    public boolean isWantToPair = false;
-    public ClientPairingThread pairingThread;
-    
+    public String userName;
+
     public SClient(Socket socket) {
 
         try {
@@ -38,8 +35,7 @@ public class SClient {
             this.cOutput = new ObjectOutputStream(this.socket.getOutputStream());
             this.cInput = new ObjectInputStream(this.socket.getInputStream());
             this.clientListenThread = new ClientListenThread(this);
-            this.pairingThread = new ClientPairingThread(this);
-            this.isPaired = false;
+
         } catch (IOException ex) {
             Logger.getLogger(SClient.class.getName()).log(Level.SEVERE, null, ex);
         }

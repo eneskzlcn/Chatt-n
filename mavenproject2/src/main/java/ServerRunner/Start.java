@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package Server;
 
+package ServerRunner;
+import Server.Server;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -12,13 +8,11 @@ import java.util.logging.Logger;
  *
  * @author Enes Kızılcın <nazifenes.kizilcin@stu.fsm.edu.tr>
  */
-
-// This is the main class of server to start the server.
 public class Start {
-
+    
     public static void main(String[] args) {
-        Server server = new Server(4000);
-        server.ListenClientConnectionRequests();
+       Server server = new Server(4000);
+       server.ListenClientConnectionRequests();
 
         while (!server.socket.isClosed()) {
 
