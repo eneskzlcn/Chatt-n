@@ -14,7 +14,12 @@ public class LoginMenuController : MonoBehaviour {
     public Text loginButtonText;
 
     public Text _infomationText;
+    
     public Client client;
+    
+    public GameObject mainMenu;
+
+    public GameObject loginMenu;
     
     public void ControlUsernameInput()
     {
@@ -26,5 +31,13 @@ public class LoginMenuController : MonoBehaviour {
         {
             _loginButton.interactable = false;
         }
+    }
+    private void Awake() {
+        client.addOnServerConnectionListener(OpenMainMenu);
+    }
+    public void OpenMainMenu()
+    {
+        mainMenu.SetActive(true);
+        mainMenu.SetActive(false);
     }
 }

@@ -116,6 +116,10 @@ namespace Server
                     case Message_Type.USERNAME:
                         this._userName = message.content;
                         Console.WriteLine("My username is : " + this._userName);
+                        Message discMessage = new Message();
+                        discMessage.type = Message_Type.DISCONNECTED;
+                        string discMessageStr = JsonConvert.SerializeObject(discMessage);
+                        this.SendMessage(discMessageStr);
                         break;
                     case Message_Type.CREATE_ROOM:
                         Room room;

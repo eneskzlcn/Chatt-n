@@ -14,6 +14,14 @@ namespace ClientSide
     {
         public  TcpClient socket = new TcpClient();
 
+        private System.Action onServerConnected;
+
+        public GameObject mainMenu;
+
+        public void addOnServerConnectionListener(System.Action action)
+        {
+            onServerConnected+=action;
+        }
         private  NetworkStream _stream;
 
         public string userName = "Enes";
@@ -41,7 +49,7 @@ namespace ClientSide
                 userName = loginMenuController._userName.text.ToString();
                 string json_message = JsonUtility.ToJson(message);
                 this.Send(json_message);
-
+                //onServerConnected?.Invoke();
                 _stream.BeginRead(_buffer,0,_buffer.Length,OnReadingData,null);
             }
             else
@@ -95,6 +103,8 @@ namespace ClientSide
                         ResourceManager.setReadedRoomNames(message.content.Split(','));
                         break;
                     case Message_Type.DISCONNECTED:
+                        Debug.Log("came");
+                        mainMenu.SetActive(true);
                         break;
                     case Message_Type.ALL_USERNAMES_LIST:
                         ResourceManager.setReadedUserNames(message.content.Split(','));                     
