@@ -7,7 +7,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import GUI.*;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -29,7 +29,12 @@ public class Client {
     public String serverIP;
     public int serverPort;
     public ClientListenThread listenThread;
-   
+    public ChattApp applicationFrame;
+    
+    public Client(ChattApp frame)
+    {
+        this.applicationFrame = frame;
+    }
     public void Connect(String serverIP, int port) {
         try {
             System.out.println("Connecting to the server");

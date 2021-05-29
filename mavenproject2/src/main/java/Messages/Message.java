@@ -15,7 +15,7 @@ package Messages;
 public class Message implements java.io.Serializable {
 
     public static enum MessageTypes {
-        USERNAME, START, MOVE, END, PAIRING, CHECK, LEAVE
+        USERNAME,CREATE_ROOM, ALL_ROOMS, PAIRING, CHECK, LEAVE, USERNAME_REACHED
     };
 
     public MessageTypes type;

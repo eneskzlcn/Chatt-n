@@ -5,8 +5,10 @@
  */
 package Server;
 
-import Messages.Message;
 import java.io.IOException;
+import Messages.Message;
+import Messages.CreateRoomMessage;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -36,18 +38,25 @@ public class ClientListenThread extends Thread {
                         String userName = String.valueOf(msg.content);
                         client.userName = userName;
                         System.out.println("Username:"+client.userName);
+                        Message userNameReceivedMsg = new Message(Message.MessageTypes.USERNAME_REACHED);
+                        userNameReceivedMsg.content = client.userName;
+                        client.Send(userNameReceivedMsg);
                         break;
-                    case MOVE:
-                        
+                    case CREATE_ROOM:
+                        CreateRoomMessage crm = (CreateRoomMessage)(msg.content);
+                        Room newRoom = new Room(crm.roomName,crm.creatorName);
+                        System.out.println("New room created. Room Name: "+crm.roomName+" , Creator: "+crm.creatorName);
+                        Server.rooms.add(newRoom);
                         break;
-                    case CHECK:
-                        
-                        break;
-                    case END:
-                        
-                        break;
-                    case LEAVE:
-                        
+                    case ALL_ROOMS:
+                        ArrayList<String> roomNames = new ArrayList<String>();
+                        for(Room room: Server.rooms)
+                        {
+                            roomNames.add(room.name);
+                        }
+                        Message allRoomsMsg = new Message(Message.MessageTypes.ALL_ROOMS);
+                        allRoomsMsg.content = roomNames;
+                        this.client.Send(allRoomsMsg);
                         break;
 
                 }

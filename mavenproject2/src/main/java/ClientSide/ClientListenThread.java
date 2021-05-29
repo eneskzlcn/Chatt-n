@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import ClientSide.*;
+import GUI.*;
+import java.util.ArrayList;
 /*
   To change this license header, choose License Headers in Project Properties.
   To change this template file, choose Tools | Templates
@@ -33,20 +35,20 @@ public class ClientListenThread extends Thread {
 
                 Message msg = (Message) (this.client.sInput.readObject());
                 switch (msg.type) {
-                    case USERNAME:
+                    
+                    case USERNAME_REACHED:
+                        System.out.println("Username reached.");
+                        this.client.applicationFrame.changeMenu(this.client.applicationFrame.loginMenu,
+                                 this.client.applicationFrame.mainMenu);
+                        this.client.applicationFrame.mainMenu.mainMenuHeader.setText("Welcome "+msg.content.toString());
                         
                         break;
-                    case PAIRING:
-                       
-                        break;
-                    case MOVE:
-               
-                        break;
-                    case CHECK:
-                      
+                    case ALL_ROOMS:
+                        ArrayList<String> roomNames = (ArrayList<String>)msg.content;
+                        this.client.applicationFrame.roomsMenu.UpdateRoomListWithGivenList(roomNames);
                         break;
 
-                    case LEAVE:
+                    case CREATE_ROOM:
                        
                         break;
                 }

@@ -14,8 +14,13 @@ public class Room {
     
     public String name;
     
-    public int capacity;
-    
     public ArrayList<String> userNames;
+    
+    public Room(String name, String creatorName)
+    {
+        userNames = new ArrayList<String>();
+        this.name = name;
+        this.userNames.add(creatorName);
+    }
     
 }

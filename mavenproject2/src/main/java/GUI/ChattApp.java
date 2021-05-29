@@ -5,6 +5,8 @@
  */
 package GUI;
 
+import ClientSide.Client;
+import javax.swing.JPanel;
 /**
  *
  * @author Enes Kızılcın <nazifenes.kizilcin@stu.fsm.edu.tr>
@@ -14,10 +16,26 @@ public class ChattApp extends javax.swing.JFrame {
     /**
      * Creates new form ChattApp
      */
+    public LoginMenu loginMenu;
+    public MainMenu mainMenu;
+    public RoomsMenu roomsMenu;
+    public Client client;
     public ChattApp() {
         initComponents();
+        client = new Client(this);
+        client.Connect("127.0.0.1", 4000);
+        loginMenu = new LoginMenu(this);
+        mainMenu = new MainMenu(this);
+        roomsMenu = new RoomsMenu(this);
+        this.add(loginMenu);
+        
     }
-
+    public void changeMenu(JPanel from, JPanel to)
+    {
+        this.remove(from);
+        this.add(to);
+        this.revalidate();
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -27,18 +45,15 @@ public class ChattApp extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        jLabel1 = new javax.swing.JLabel();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setLocation(new java.awt.Point(0, 0));
+        setMaximumSize(new java.awt.Dimension(600, 600));
+        setMinimumSize(new java.awt.Dimension(600, 600));
+
+        jLabel1.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(204, 204, 255)));
+        getContentPane().add(jLabel1, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -79,5 +94,6 @@ public class ChattApp extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }

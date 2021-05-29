@@ -1308,6 +1308,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b585d49364c14074e89004faeae13c81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainMenu: {fileID: 1557669002}
   userName: enes
   loginMenuController: {fileID: 609126922}
 --- !u!4 &230777540

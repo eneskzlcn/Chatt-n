@@ -5,6 +5,9 @@
  */
 package GUI;
 
+import ClientSide.Client;
+import javax.swing.JOptionPane;
+import Messages.Message;
 /**
  *
  * @author Enes Kızılcın <nazifenes.kizilcin@stu.fsm.edu.tr>
@@ -14,8 +17,10 @@ public class LoginMenu extends javax.swing.JPanel {
     /**
      * Creates new form LoginMenu
      */
-    public LoginMenu() {
+    ChattApp mainFrame;
+    public LoginMenu(ChattApp mainFrame) {
         initComponents();
+        this.mainFrame = mainFrame;
     }
 
     /**
@@ -27,19 +32,85 @@ public class LoginMenu extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        loginMenuHeaderLBL = new javax.swing.JLabel();
+        userNameInputLBL = new javax.swing.JLabel();
+        loginBTN = new javax.swing.JButton();
+        userNameINP = new javax.swing.JTextField();
+
+        loginMenuHeaderLBL.setText("HEEADER");
+
+        userNameInputLBL.setText("Username");
+
+        loginBTN.setText("LOGIN");
+        loginBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loginBTNActionPerformed(evt);
+            }
+        });
+
+        userNameINP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                userNameINPActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(73, 73, 73)
+                        .addComponent(userNameInputLBL, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(userNameINP, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(170, 170, 170)
+                        .addComponent(loginBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(192, 192, 192)
+                        .addComponent(loginMenuHeaderLBL, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(191, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(50, 50, 50)
+                .addComponent(loginMenuHeaderLBL)
+                .addGap(86, 86, 86)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(userNameInputLBL)
+                    .addComponent(userNameINP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 97, Short.MAX_VALUE)
+                .addComponent(loginBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(91, 91, 91))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void userNameINPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userNameINPActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_userNameINPActionPerformed
+
+    private void loginBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginBTNActionPerformed
+        String userName = userNameINP.getText().toString();
+        if(userName.isEmpty())
+        {
+            JOptionPane.showMessageDialog(null, "You need to input a username");
+            return;
+        }
+        Message message = new Message(Message.MessageTypes.USERNAME);
+        message.content = userName;
+        this.mainFrame.client.Send(message);
+        this.mainFrame.client.userName =userName;
+
+    }//GEN-LAST:event_loginBTNActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton loginBTN;
+    private javax.swing.JLabel loginMenuHeaderLBL;
+    private javax.swing.JTextField userNameINP;
+    private javax.swing.JLabel userNameInputLBL;
     // End of variables declaration//GEN-END:variables
 }
