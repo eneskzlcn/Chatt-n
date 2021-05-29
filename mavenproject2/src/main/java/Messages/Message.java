@@ -16,6 +16,7 @@ public class Message implements java.io.Serializable {
 
     public static enum MessageTypes {
         USERNAME,CREATE_ROOM, ALL_ROOMS, PAIRING, CHECK, LEAVE, USERNAME_REACHED
+        ,ROOM_CREATED, IN_ROOM_MESSAGE, JOIN_ROOM
     };
 
     public MessageTypes type;

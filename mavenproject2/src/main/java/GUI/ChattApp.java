@@ -19,6 +19,8 @@ public class ChattApp extends javax.swing.JFrame {
     public LoginMenu loginMenu;
     public MainMenu mainMenu;
     public RoomsMenu roomsMenu;
+    public InRoomMenu inRoomMenu;
+    
     public Client client;
     public ChattApp() {
         initComponents();
@@ -27,6 +29,7 @@ public class ChattApp extends javax.swing.JFrame {
         loginMenu = new LoginMenu(this);
         mainMenu = new MainMenu(this);
         roomsMenu = new RoomsMenu(this);
+        inRoomMenu = new InRoomMenu(this);
         this.add(loginMenu);
         
     }

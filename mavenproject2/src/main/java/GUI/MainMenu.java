@@ -5,6 +5,7 @@
  */
 package GUI;
 import ClientSide.Client;
+import Messages.Message;
 
 /**
  *
@@ -76,7 +77,9 @@ public class MainMenu extends javax.swing.JPanel {
 
     private void roomsBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roomsBTNActionPerformed
         // TODO add your handling code here:
+        Message msg = new Message(Message.MessageTypes.ALL_ROOMS);
         
+        this.mainFrame.client.Send(msg);
         this.mainFrame.changeMenu(this.mainFrame.mainMenu, this.mainFrame.roomsMenu);
         
     }//GEN-LAST:event_roomsBTNActionPerformed

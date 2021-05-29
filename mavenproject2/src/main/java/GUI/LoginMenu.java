@@ -37,7 +37,7 @@ public class LoginMenu extends javax.swing.JPanel {
         loginBTN = new javax.swing.JButton();
         userNameINP = new javax.swing.JTextField();
 
-        loginMenuHeaderLBL.setText("HEEADER");
+        loginMenuHeaderLBL.setText("CHAT'N");
 
         userNameInputLBL.setText("Username");
 
@@ -69,7 +69,7 @@ public class LoginMenu extends javax.swing.JPanel {
                         .addGap(170, 170, 170)
                         .addComponent(loginBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(192, 192, 192)
+                        .addGap(204, 204, 204)
                         .addComponent(loginMenuHeaderLBL, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(191, Short.MAX_VALUE))
         );

@@ -6,6 +6,7 @@
 package GUI;
 
 import Messages.CreateRoomMessage;
+import Messages.JoinRoomMessage;
 import Messages.Message;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
@@ -205,7 +206,14 @@ public class RoomsMenu extends javax.swing.JPanel {
 
     private void joinRoomBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_joinRoomBTNActionPerformed
         // TODO add your handling code here:
-        String chosenRoom;
+        if(roomList.getSelectedValue() == null)return;
+        System.out.println("Selected Value is not empty");
+        String chosenRoom = roomList.getSelectedValue();
+        Message message = new Message(Message.MessageTypes.JOIN_ROOM);
+        JoinRoomMessage jrm = new JoinRoomMessage(this.mainFrame.client.userName,chosenRoom);
+        message.content = jrm;
+        this.mainFrame.client.Send(message);
+        System.out.println("Join Room Message Sended");
     }//GEN-LAST:event_joinRoomBTNActionPerformed
 
 

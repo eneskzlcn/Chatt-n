@@ -22,5 +22,30 @@ public class Room {
         this.name = name;
         this.userNames.add(creatorName);
     }
+    // return true if the user added succesfully. else return false;
+    public boolean addAndValidateUser(String userName)
+    {
+        if(isValidUserAdding(userName))
+        {
+            this.userNames.add(userName);
+            return true;
+        }
+        return false;
+    }
+    public void addUser(String userName)
+    {
+        if(isValidUserAdding(userName))
+        {
+            this.userNames.add(userName);
+        }
+    }
+    public boolean isValidUserAdding(String userName)
+    {
+        for(String name : userNames)
+        {
+            if(name.equals(userName)) return false;
+        }
+        return true;
+    }
     
 }

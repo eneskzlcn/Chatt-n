@@ -6,7 +6,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import ClientSide.*;
 import GUI.*;
+import Messages.RoomMessage;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 /*
   To change this license header, choose License Headers in Project Properties.
   To change this template file, choose Tools | Templates
@@ -48,8 +50,31 @@ public class ClientListenThread extends Thread {
                         this.client.applicationFrame.roomsMenu.UpdateRoomListWithGivenList(roomNames);
                         break;
 
-                    case CREATE_ROOM:
-                       
+                    case ROOM_CREATED:
+                        String roomName = msg.content.toString();
+                        this.client.applicationFrame.inRoomMenu.inRoomNameLBL.setText(roomName);
+                        this.client.applicationFrame.changeMenu(this.client.applicationFrame.roomsMenu, 
+                                this.client.applicationFrame.inRoomMenu);
+                        
+                        break;
+                    case IN_ROOM_MESSAGE:
+                        RoomMessage roomMsg = (RoomMessage)msg.content;
+                        if(roomMsg.type == RoomMessage.RoomMessageType.TEXT)
+                        {
+                          this.client.applicationFrame.inRoomMenu.AddMessageToChat(roomMsg.senderName, roomMsg.content);
+
+                        }
+                        break;
+                    case JOIN_ROOM:
+                        String roomToBeJoined = msg.content.toString();
+                        if(roomToBeJoined.equals("No"))
+                        {
+                            JOptionPane.showMessageDialog(this.client.applicationFrame.roomsMenu,"Can not connected to the room" );
+                            return;
+                        }
+                        this.client.applicationFrame.inRoomMenu.inRoomNameLBL.setText(roomToBeJoined);
+                        this.client.applicationFrame.changeMenu(this.client.applicationFrame.roomsMenu,
+                            this.client.applicationFrame.inRoomMenu);
                         break;
                 }
 

@@ -29,7 +29,7 @@
                       <Component id="loginBTN" min="-2" pref="109" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="192" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="204" max="-2" attributes="0"/>
                       <Component id="loginMenuHeaderLBL" min="-2" pref="65" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -57,7 +57,7 @@
   <SubComponents>
     <Component class="javax.swing.JLabel" name="loginMenuHeaderLBL">
       <Properties>
-        <Property name="text" type="java.lang.String" value="HEEADER"/>
+        <Property name="text" type="java.lang.String" value="CHAT&apos;N"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="userNameInputLBL">

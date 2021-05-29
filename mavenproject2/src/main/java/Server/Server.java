@@ -46,37 +46,46 @@ public class Server {
 
         }
     }
-
     // starts the acceptance
     public void ListenClientConnectionRequests() {
         this.listenConnectionRequestThread.start();
     }
-
-    public static void SendMessage(SClient client, Message message) {
-        try {
-            client.cOutput.writeObject(message);
-        } catch (IOException ex) {
-            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+    
+    public static Room getRoomByName(String roomName)
+    {
+        for(Room room: Server.rooms)
+        {
+            if(room.name.equals(roomName))
+            {
+                return room;
+            }
         }
-
-    }
-
-    public static void SendMessage(SClient client, String message) {
-        try {
-            client.cOutput.writeObject(message);
-        } catch (IOException ex) {
-            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
+        
+       return null;
     }
     
-    public static void SendMessage(SClient client, Object object) {
-        try {
-            client.cOutput.writeObject(object);
-        } catch (IOException ex) {
-            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+    public static void SendMessageToGivenRoom(String roomName,Message message)
+    {
+        Room chosenRoom = getRoomByName(roomName);
+        if(chosenRoom == null) return;
+        
+        for(Room room: Server.rooms)
+        {
+            for(String userName : room.userNames)
+            {
+                SClient clientHasThisName = getClientByName(userName);
+                if(clientHasThisName == null) continue;
+                clientHasThisName.Send(message);
+            }
         }
-
     }
-
+    
+    public static SClient getClientByName(String userName)
+    {
+        for(SClient client : Server.clients)
+        {
+            if(client.userName == userName) return client;
+        }
+        return null;
+    }
 }
