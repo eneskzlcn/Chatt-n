@@ -5,6 +5,7 @@
  */
 package Server;
 
+import Messages.CreatePersonelRoomMessage;
 import java.io.IOException;
 import Messages.Message;
 import Messages.CreateRoomMessage;
@@ -70,7 +71,6 @@ public class ClientListenThread extends Thread {
                         break;
                     
                     case JOIN_ROOM:
-                        System.out.println("JOIN ROOM MSG CAME");
                         JoinRoomMessage jrm = (JoinRoomMessage)msg.content;
                         Room roomToBeJoined = Server.getRoomByName(jrm.roomName);
                         
@@ -86,7 +86,51 @@ public class ClientListenThread extends Thread {
                         this.client.Send(message);
                         
                         break;
-
+                    case ALL_USERS:
+                        ArrayList<String> users = new ArrayList<String>();
+                        for(SClient client : Server.clients)
+                        {
+                            users.add(client.userName);
+                        }
+                        Message allUsersMessage = new Message(Message.MessageTypes.ALL_USERS);
+                        allUsersMessage.content = users;
+                        this.client.Send(allUsersMessage);
+                        break;
+                    case CREATE_PERSONEL_ROOM:
+                        CreatePersonelRoomMessage cprm = (CreatePersonelRoomMessage)msg.content;
+                        SClient joiner = Server.getClientByName(cprm.joiner);
+                        Message acceptPersonelRoomMessage = new Message(Message.MessageTypes.ACCEPT_PERSONEL_ROOM);
+                        acceptPersonelRoomMessage.content = cprm;
+                        joiner.Send(acceptPersonelRoomMessage);
+                        
+                    case ACCEPT_PERSONEL_ROOM:
+                        CreatePersonelRoomMessage answerMessage = (CreatePersonelRoomMessage)msg.content;
+                        if(answerMessage.joiner.equals("NO"))
+                        {
+                            Message rejectedPersonelRoomMessage = new Message(Message.MessageTypes.PERSONEL_ROOM_REJECTED);
+                            SClient rejectedUser = Server.getClientByName(answerMessage.creator);
+                            rejectedUser.Send(rejectedPersonelRoomMessage);
+                        }
+                        else
+                        {
+                            SClient creatorUser = Server.getClientByName(answerMessage.creator);
+                            SClient joinerUser = Server.getClientByName(answerMessage.joiner);
+                            PersonelRoom pr = new PersonelRoom(answerMessage.creator,answerMessage.joiner);
+                            Server.personelRooms.add(pr);
+                            Message acceptedPersonelRoomMessage = new Message(Message.MessageTypes.PERSONEL_ROOM_ACCEPTED);
+                            acceptedPersonelRoomMessage.content = answerMessage.joiner;
+                            creatorUser.Send(acceptedPersonelRoomMessage);
+                            acceptedPersonelRoomMessage.content =answerMessage.creator;
+                            joinerUser.Send(acceptedPersonelRoomMessage);
+                        }
+                        break;
+                    case PERSONEL_ROOM_MESSAGE:
+                        RoomMessage personelRoomMsg = (RoomMessage)msg.content;
+                        SClient userWillReceieveMessage = Server.getPersonelPairByClientName(personelRoomMsg.senderName);
+                        SClient userWhoSendMessage = Server.getClientByName(personelRoomMsg.senderName);
+                        userWillReceieveMessage.Send(msg);
+                        userWhoSendMessage.Send(msg);
+                        
                 }
             } catch (IOException ex) {
                 Logger.getLogger(ClientListenThread.class.getName()).log(Level.SEVERE, null, ex);

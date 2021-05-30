@@ -35,6 +35,7 @@ public class MainMenu extends javax.swing.JPanel {
         roomsBTN = new javax.swing.JButton();
         usersBTN = new javax.swing.JButton();
 
+        mainMenuHeader.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         mainMenuHeader.setText("jLabel1");
 
         roomsBTN.setText("Rooms");
@@ -45,6 +46,11 @@ public class MainMenu extends javax.swing.JPanel {
         });
 
         usersBTN.setText("Users");
+        usersBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                usersBTNActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -54,9 +60,9 @@ public class MainMenu extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(173, 173, 173)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(usersBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(roomsBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(roomsBTN, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
+                            .addComponent(usersBTN, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(165, 165, 165)
                         .addComponent(mainMenuHeader, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -65,13 +71,13 @@ public class MainMenu extends javax.swing.JPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(19, 19, 19)
+                .addGap(20, 20, 20)
                 .addComponent(mainMenuHeader)
-                .addGap(98, 98, 98)
+                .addGap(97, 97, 97)
                 .addComponent(roomsBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(58, 58, 58)
-                .addComponent(usersBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(133, Short.MAX_VALUE))
+                .addGap(45, 45, 45)
+                .addComponent(usersBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(142, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -83,6 +89,13 @@ public class MainMenu extends javax.swing.JPanel {
         this.mainFrame.changeMenu(this.mainFrame.mainMenu, this.mainFrame.roomsMenu);
         
     }//GEN-LAST:event_roomsBTNActionPerformed
+
+    private void usersBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usersBTNActionPerformed
+        // TODO add your handling code here:
+        Message message = new Message(Message.MessageTypes.ALL_USERS);
+        this.mainFrame.client.Send(message);
+        this.mainFrame.changeMenu(this.mainFrame.mainMenu, this.mainFrame.allUsersMenu);
+    }//GEN-LAST:event_usersBTNActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import ClientSide.*;
 import GUI.*;
+import Messages.CreatePersonelRoomMessage;
 import Messages.RoomMessage;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -61,7 +62,7 @@ public class ClientListenThread extends Thread {
                         RoomMessage roomMsg = (RoomMessage)msg.content;
                         if(roomMsg.type == RoomMessage.RoomMessageType.TEXT)
                         {
-                          this.client.applicationFrame.inRoomMenu.AddMessageToChat(roomMsg.senderName, roomMsg.content);
+                          this.client.applicationFrame.inRoomMenu.AddMessageToChat(roomMsg.senderName, roomMsg.content.toString());
 
                         }
                         break;
@@ -76,6 +77,49 @@ public class ClientListenThread extends Thread {
                         this.client.applicationFrame.changeMenu(this.client.applicationFrame.roomsMenu,
                             this.client.applicationFrame.inRoomMenu);
                         break;
+                    case ALL_USERS:
+                        ArrayList<String> users = (ArrayList<String>)msg.content;
+                        this.client.applicationFrame.allUsersMenu.UpdateUserListWithGivenList(users);
+                        break;
+                        
+                    case ACCEPT_PERSONEL_ROOM:
+                        CreatePersonelRoomMessage cprm = (CreatePersonelRoomMessage)msg.content;
+                        int inputDialogue = JOptionPane.showConfirmDialog(null, "Do you want to chat with "+cprm.creator+" ?", 
+                                "Personel Room Request", JOptionPane.YES_NO_OPTION);
+                        String userAnswer;
+                        if(inputDialogue == 0)
+                        {
+                            userAnswer = cprm.joiner;
+                        }
+                        else
+                        {
+                            userAnswer = "NO";
+                        }
+                        cprm.joiner = userAnswer;
+                        
+                        Message personelRoomAnswerMessage = new Message(Message.MessageTypes.ACCEPT_PERSONEL_ROOM);
+                        personelRoomAnswerMessage.content = cprm;
+                        this.client.Send(personelRoomAnswerMessage);
+                        break;
+                    case PERSONEL_ROOM_REJECTED:
+                        JOptionPane.showMessageDialog(this.client.applicationFrame.allUsersMenu, "Personel Chat Rejected");
+                        break;
+                        
+                    case PERSONEL_ROOM_ACCEPTED:
+                        String userToChat = (String)msg.content;
+                        this.client.applicationFrame.personelRoomMenu.personelRoomHeaderLBL.setText("Chat With "+userToChat);
+                        this.client.applicationFrame.changeMenu(this.client.applicationFrame.allUsersMenu,
+                                this.client.applicationFrame.personelRoomMenu);
+                        //doldurcan
+                        break;
+                    case PERSONEL_ROOM_MESSAGE:
+                        RoomMessage rm = (RoomMessage)msg.content;
+                        if(rm.type == RoomMessage.RoomMessageType.TEXT)
+                        {
+                           this.client.applicationFrame.personelRoomMenu.AddTextMessageToChat(rm.senderName,rm.content.toString());
+                           break;
+                        }
+                       break;
                 }
 
             } catch (IOException ex) {

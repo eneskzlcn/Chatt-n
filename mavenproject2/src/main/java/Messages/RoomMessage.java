@@ -17,9 +17,9 @@ public class RoomMessage implements java.io.Serializable{
     public String roomName;
     public String senderName;
     public RoomMessageType type;
-    public String content;
+    public Object content;
     
-    public RoomMessage(String roomName, String senderName, RoomMessageType type, String content) {
+    public RoomMessage(String roomName, String senderName, RoomMessageType type, Object content) {
         this.roomName = roomName;
         this.senderName = senderName;
         this.type = type;

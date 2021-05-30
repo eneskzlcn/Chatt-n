@@ -28,6 +28,8 @@ public class Server {
     public static ArrayList<SClient> clients;
     
     public static ArrayList<Room> rooms;
+    
+    public static ArrayList<PersonelRoom> personelRooms;
 
     //lock mechanism for pairing thread. One client can match with one client at the same time. So we use the lock mechanism to provide
     //other clients not try to pair this client at the same time.
@@ -40,6 +42,7 @@ public class Server {
             this.listenConnectionRequestThread = new ListenConnectionRequestThread(this);
             this.clients = new ArrayList<SClient>();
             this.rooms = new ArrayList<Room>();
+            this.personelRooms = new ArrayList<PersonelRoom>();
             
         } catch (IOException ex) {
             System.out.println("There is an error occured when opening the server on port:" + this.port);
@@ -84,8 +87,24 @@ public class Server {
     {
         for(SClient client : Server.clients)
         {
-            if(client.userName == userName) return client;
+            if(client.userName.equals(userName)) return client;
         }
         return null;
+    }
+    
+    public static SClient getPersonelPairByClientName(String personelRoomUser)
+    {
+        for(PersonelRoom p : Server.personelRooms)
+        {
+            if(p.creator.equals(personelRoomUser))
+            {
+                return getClientByName(p.joiner);
+            }
+            else if( p.joiner.equals(personelRoomUser))
+            {
+                return getClientByName(p.creator);
+            }
+        }   
+       return null;
     }
 }
