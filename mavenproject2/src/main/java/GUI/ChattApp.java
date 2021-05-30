@@ -7,6 +7,7 @@ package GUI;
 
 import ClientSide.Client;
 import javax.swing.JPanel;
+
 /**
  *
  * @author Enes Kızılcın <nazifenes.kizilcin@stu.fsm.edu.tr>
@@ -22,8 +23,9 @@ public class ChattApp extends javax.swing.JFrame {
     public InRoomMenu inRoomMenu;
     public AllUsersMenu allUsersMenu;
     public PersonelRoomMenu personelRoomMenu;
-    
     public Client client;
+  
+
     public ChattApp() {
         initComponents();
         client = new Client(this);
@@ -32,13 +34,13 @@ public class ChattApp extends javax.swing.JFrame {
         mainMenu = new MainMenu(this);
         roomsMenu = new RoomsMenu(this);
         inRoomMenu = new InRoomMenu(this);
-        allUsersMenu = new AllUsersMenu(this); 
+        allUsersMenu = new AllUsersMenu(this);
         personelRoomMenu = new PersonelRoomMenu(this);
         this.add(loginMenu);
-        
+
     }
-    public void changeMenu(JPanel from, JPanel to)
-    {
+
+    public void changeMenu(JPanel from, JPanel to) {
         this.remove(roomsMenu);
         this.remove(loginMenu);
         this.remove(mainMenu);

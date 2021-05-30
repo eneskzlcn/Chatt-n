@@ -110,7 +110,7 @@ public class ClientListenThread extends Thread {
                         this.client.applicationFrame.personelRoomMenu.personelRoomHeaderLBL.setText("Chat With "+userToChat);
                         this.client.applicationFrame.changeMenu(this.client.applicationFrame.allUsersMenu,
                                 this.client.applicationFrame.personelRoomMenu);
-                        //doldurcan
+                        
                         break;
                     case PERSONEL_ROOM_MESSAGE:
                         RoomMessage rm = (RoomMessage)msg.content;
