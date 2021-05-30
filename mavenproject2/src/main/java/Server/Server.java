@@ -33,7 +33,6 @@ public class Server {
 
     //lock mechanism for pairing thread. One client can match with one client at the same time. So we use the lock mechanism to provide
     //other clients not try to pair this client at the same time.
-    public static Semaphore pairingLockForTwoPair = new Semaphore(1, true);
 
     public Server(int port) {
         try {
@@ -92,6 +91,26 @@ public class Server {
         return null;
     }
     
+    public static void FireClient(SClient client)
+    {
+        for(Room room : Server.rooms)
+        {
+            if(room.hasUser(client.userName)) 
+            {
+               room.removeUser(client.userName);
+               break;
+            }
+        }
+        for(PersonelRoom pRoom : Server.personelRooms)
+        {
+            if(pRoom.hasUser(client.userName))
+            {
+                Server.personelRooms.remove(pRoom);
+                break;
+            }
+        }
+        Server.clients.remove(client);
+    }
     public static SClient getPersonelPairByClientName(String personelRoomUser)
     {
         for(PersonelRoom p : Server.personelRooms)
@@ -107,4 +126,6 @@ public class Server {
         }   
        return null;
     }
+    
+   
 }

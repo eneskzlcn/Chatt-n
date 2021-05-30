@@ -21,4 +21,8 @@ public class PersonelRoom {
         this.joiner = joiner;
     }
     
+    public boolean hasUser(String userName)
+    {
+        return ( creator.equals(userName) || joiner.equals(userName) ) ;
+    }
 }

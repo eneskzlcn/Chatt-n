@@ -35,6 +35,7 @@ public class ClientListenThread extends Thread {
         while (!this.client.socket.isClosed()) {
 
             try {
+                
                 Message msg = (Message) (this.client.cInput.readObject());
                 switch (msg.type) {
                     case USERNAME:
@@ -133,10 +134,10 @@ public class ClientListenThread extends Thread {
                         
                 }
             } catch (IOException ex) {
-                Logger.getLogger(ClientListenThread.class.getName()).log(Level.SEVERE, null, ex);
+                Server.FireClient(this.client);
             } catch (ClassNotFoundException ex) {
-                Logger.getLogger(ClientListenThread.class.getName()).log(Level.SEVERE, null, ex);
-            }
+                Server.FireClient(this.client);
+            } 
         }
     }
 }

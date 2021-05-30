@@ -47,5 +47,19 @@ public class Room {
         }
         return true;
     }
+    public boolean hasUser(String userName)
+    {
+        for(String name: userNames)
+        {
+            if(name.equals(userName)) return true;
+        }
+        return false;
+    }
+    
+    public void removeUser(String userName)
+    {
+        this.userNames.remove(userName);
+        if(this.userNames.isEmpty()) Server.rooms.remove(this);
+    }
     
 }
