@@ -33,7 +33,7 @@ public class AllUsersMenu extends javax.swing.JPanel {
         userListModel.removeAllElements();
         for(String name : userNames)
         {
-            if(name.isBlank() || name.equals(this.mainFrame.client.userName)) return;
+            if(name.isBlank() || name.equals(this.mainFrame.client.userName)) continue;
             userListModel.addElement(name);
         }
     }

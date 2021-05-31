@@ -30,7 +30,8 @@ public class Server {
     public static ArrayList<Room> rooms;
     
     public static ArrayList<PersonelRoom> personelRooms;
-
+    
+    public static ArrayList<ServerFile> uploadedFiles;
     //lock mechanism for pairing thread. One client can match with one client at the same time. So we use the lock mechanism to provide
     //other clients not try to pair this client at the same time.
 

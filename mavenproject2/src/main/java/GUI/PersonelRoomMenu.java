@@ -5,9 +5,13 @@
  */
 package GUI;
 
+import Messages.FileMessage;
 import Messages.Message;
 import Messages.RoomMessage;
+import java.io.File;
 import javax.swing.DefaultListModel;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -20,18 +24,19 @@ public class PersonelRoomMenu extends javax.swing.JPanel {
      */
     ChattApp mainFrame;
     DefaultListModel chatPanelModel;
+
     public PersonelRoomMenu(ChattApp mainFrame) {
         initComponents();
         this.mainFrame = mainFrame;
         chatPanelModel = new DefaultListModel();
-        this.personelRoomChatJL.setModel(chatPanelModel);  
+        this.personelRoomChatJL.setModel(chatPanelModel);
     }
-    
-     public void AddTextMessageToChat(String senderName, String content)
-    {
-        String message = senderName + ": "+content;
+
+    public void AddTextMessageToChat(String senderName, String content) {
+        String message = senderName + ": " + content;
         chatPanelModel.addElement(message);
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -50,6 +55,11 @@ public class PersonelRoomMenu extends javax.swing.JPanel {
 
         personelRoomHeaderLBL.setText("Personel Room");
 
+        personelRoomChatJL.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                personelRoomChatJLMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(personelRoomChatJL);
 
         personelRoomMessageSendBTN.setText("Send");
@@ -60,6 +70,11 @@ public class PersonelRoomMenu extends javax.swing.JPanel {
         });
 
         personelRoomSendFileBTN.setText("+");
+        personelRoomSendFileBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                personelRoomSendFileBTNActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -75,8 +90,8 @@ public class PersonelRoomMenu extends javax.swing.JPanel {
                                 .addComponent(personelRoomMessageINP, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(personelRoomMessageSendBTN)
-                                .addGap(18, 18, 18)
-                                .addComponent(personelRoomSendFileBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(personelRoomSendFileBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(247, 247, 247)
                         .addComponent(personelRoomHeaderLBL)))
@@ -94,23 +109,74 @@ public class PersonelRoomMenu extends javax.swing.JPanel {
                     .addComponent(personelRoomMessageINP, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(personelRoomMessageSendBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(personelRoomSendFileBTN))
-                .addContainerGap(140, Short.MAX_VALUE))
+                .addGap(140, 140, 140))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void personelRoomMessageSendBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_personelRoomMessageSendBTNActionPerformed
         // TODO add your handling code here:
         String textMessageINP = personelRoomMessageINP.getText().toString();
-        if(textMessageINP.isBlank())
-        {
+        if (textMessageINP.isBlank()) {
             return;
         }
         RoomMessage roomMsg = new RoomMessage("personel",
-                this.mainFrame.client.userName,RoomMessage.RoomMessageType.TEXT,textMessageINP);
+                this.mainFrame.client.userName, RoomMessage.RoomMessageType.TEXT, textMessageINP);
         Message msg = new Message(Message.MessageTypes.PERSONEL_ROOM_MESSAGE);
         msg.content = roomMsg;
         this.mainFrame.client.Send(msg);
     }//GEN-LAST:event_personelRoomMessageSendBTNActionPerformed
+
+    public boolean isMessageDownloadsFile(String message)
+    {
+        if(message.contains("Click to see download button!"))
+        {
+            return true;
+        }
+        return false;
+    }
+    public String getFileNameFromMessageByGivenType(String userMessage)
+    {
+        return userMessage.split(" ")[2];
+    }
+    private void personelRoomChatJLMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_personelRoomChatJLMouseClicked
+        // TODO add your handling code here:
+        String userMessage = personelRoomChatJL.getSelectedValue();
+        if (userMessage == null) {
+            return;
+        }
+        if (isMessageDownloadsFile(userMessage)) {
+       
+            int inputDialogue = JOptionPane.showConfirmDialog(null, "Do you want to download the file " + "?",
+                    "Download File", JOptionPane.YES_NO_OPTION);
+
+            if (inputDialogue == 0) {
+                //yes
+                String fileName = getFileNameFromMessageByGivenType(userMessage);
+                Message message = new Message(Message.MessageTypes.DOWNLOAD_FILE_REQUEST);
+                message.content = fileName;
+            } else {
+                personelRoomChatJL.setSelectedIndex(-1);
+            }
+        }
+    }//GEN-LAST:event_personelRoomChatJLMouseClicked
+    
+    public String chooseFileAndGetItsPath() { //When you choose a file from jFileChooser
+        String filePath = "";
+        JFileChooser jf = new JFileChooser();
+        jf.setVisible(true);
+        jf.showOpenDialog(null);
+
+        try {
+            File f = new File(jf.getSelectedFile().getPath()); //in File choose you can not choose directory
+            filePath = f.getPath();
+        } catch (Exception e) {
+
+        }
+        return filePath;
+    }
+    private void personelRoomSendFileBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_personelRoomSendFileBTNActionPerformed
+        String chosenFilePath = chooseFileAndGetItsPath();
+    }//GEN-LAST:event_personelRoomSendFileBTNActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

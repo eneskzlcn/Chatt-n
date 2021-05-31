@@ -12,7 +12,7 @@ package Messages;
 public class RoomMessage implements java.io.Serializable{
     
     public static enum RoomMessageType{
-        TEXT, VIDEO, DOCUMENT
+        TEXT, FILE
     };
     public String roomName;
     public String senderName;
