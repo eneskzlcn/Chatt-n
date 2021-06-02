@@ -10,5 +10,16 @@ package Server;
  * @author Enes Kızılcın <nazifenes.kizilcin@stu.fsm.edu.tr>
  */
 public class ServerFile {
-    String name;
+    
+    public String sharedRoomName;
+    public String name;
+    public String path;
+
+    public ServerFile(String sharedRoomName, String name, String path) {
+        this.sharedRoomName = sharedRoomName;
+        this.name = name;
+        this.path = path;
+    }
+    
 }
+    

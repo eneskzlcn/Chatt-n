@@ -53,12 +53,20 @@ public class AllUsersMenu extends javax.swing.JPanel {
         startPersonalMessagingBTN = new javax.swing.JButton();
         refreshBTN = new javax.swing.JButton();
         returnMenuBTN = new javax.swing.JButton();
+        startMessageBTN = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
+        setMaximumSize(new java.awt.Dimension(500, 500));
+        setMinimumSize(new java.awt.Dimension(500, 500));
+        setPreferredSize(new java.awt.Dimension(500, 500));
+
+        allUsersMenuHeaderLBL.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         allUsersMenuHeaderLBL.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         allUsersMenuHeaderLBL.setText("ALL USERS");
 
         jScrollPane1.setViewportView(allUsersJL);
 
+        startPersonalMessagingBTN.setBackground(new java.awt.Color(204, 255, 255));
         startPersonalMessagingBTN.setText("Start Message");
         startPersonalMessagingBTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -66,6 +74,9 @@ public class AllUsersMenu extends javax.swing.JPanel {
             }
         });
 
+        refreshBTN.setBackground(new java.awt.Color(204, 255, 255));
+        refreshBTN.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        refreshBTN.setForeground(new java.awt.Color(0, 0, 0));
         refreshBTN.setText("Refresh");
         refreshBTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -75,43 +86,73 @@ public class AllUsersMenu extends javax.swing.JPanel {
 
         returnMenuBTN.setText("Return Menu");
 
+        startMessageBTN.setBackground(new java.awt.Color(204, 255, 255));
+        startMessageBTN.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        startMessageBTN.setForeground(new java.awt.Color(0, 0, 0));
+        startMessageBTN.setText("Start Messaging");
+        startMessageBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                startMessageBTNActionPerformed(evt);
+            }
+        });
+
+        jButton1.setBackground(new java.awt.Color(204, 255, 255));
+        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(0, 0, 0));
+        jButton1.setText("Return");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(allUsersMenuHeaderLBL, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(122, 122, 122))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(214, 214, 214)
-                        .addComponent(allUsersMenuHeaderLBL, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(108, 108, 108)
+                        .addComponent(startPersonalMessagingBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(44, 44, 44)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(startPersonalMessagingBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(startMessageBTN)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGap(24, 24, 24)
                                 .addComponent(refreshBTN))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(198, 198, 198)
-                        .addComponent(returnMenuBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(45, Short.MAX_VALUE))
+                        .addGap(184, 184, 184)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(returnMenuBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(68, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(allUsersMenuHeaderLBL, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(allUsersMenuHeaderLBL, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(87, 87, 87)
-                        .addComponent(refreshBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(106, 106, 106)
+                        .addComponent(refreshBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(startMessageBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(94, 94, 94)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(828, 828, 828)
                 .addComponent(startPersonalMessagingBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(returnMenuBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20))
         );
@@ -125,23 +166,34 @@ public class AllUsersMenu extends javax.swing.JPanel {
 
     private void startPersonalMessagingBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startPersonalMessagingBTNActionPerformed
         // TODO add your handling code here:
-        if(allUsersJL.getSelectedValue() == null) return;
+        
+    }//GEN-LAST:event_startPersonalMessagingBTNActionPerformed
+
+    private void startMessageBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startMessageBTNActionPerformed
+        // TODO add your handling code here:
+         if(allUsersJL.getSelectedValue() == null) return;
         CreatePersonelRoomMessage cprm = new CreatePersonelRoomMessage();
         cprm.creator = this.mainFrame.client.userName;
         cprm.joiner = allUsersJL.getSelectedValue().toString();
         Message message = new Message(Message.MessageTypes.CREATE_PERSONEL_ROOM);
         message.content = cprm;
         this.mainFrame.client.Send(message);
-        
-    }//GEN-LAST:event_startPersonalMessagingBTNActionPerformed
+    }//GEN-LAST:event_startMessageBTNActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        this.mainFrame.changeMenu(this.mainFrame.allUsersMenu, this.mainFrame.mainMenu);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList<String> allUsersJL;
     private javax.swing.JLabel allUsersMenuHeaderLBL;
+    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton refreshBTN;
     private javax.swing.JButton returnMenuBTN;
+    private javax.swing.JButton startMessageBTN;
     private javax.swing.JButton startPersonalMessagingBTN;
     // End of variables declaration//GEN-END:variables
 }

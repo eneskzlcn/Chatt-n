@@ -12,6 +12,7 @@ package Server;
 //purpose of this room is chat with client-client.
 public class PersonelRoom {
     
+    
     public String creator;
     
     public String joiner;

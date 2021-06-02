@@ -58,6 +58,7 @@ public class Room {
     
     public void removeUser(String userName)
     {
+        if(!hasUser(userName))return;
         this.userNames.remove(userName);
         if(this.userNames.isEmpty()) Server.rooms.remove(this);
     }

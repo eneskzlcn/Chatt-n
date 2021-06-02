@@ -11,5 +11,13 @@ package Messages;
  */
 public class FileMessage implements java.io.Serializable{
     
-    String fileName;
+    public String fileName;
+    public byte[] content;
+
+    public FileMessage(String fileName, byte[] content) {
+        this.fileName = fileName;
+        this.content = content;
+    }
+    
+    
 }

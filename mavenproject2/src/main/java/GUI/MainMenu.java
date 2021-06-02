@@ -35,9 +35,17 @@ public class MainMenu extends javax.swing.JPanel {
         roomsBTN = new javax.swing.JButton();
         usersBTN = new javax.swing.JButton();
 
-        mainMenuHeader.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        mainMenuHeader.setText("jLabel1");
+        setForeground(new java.awt.Color(0, 153, 0));
+        setMaximumSize(new java.awt.Dimension(500, 500));
+        setMinimumSize(new java.awt.Dimension(500, 500));
 
+        mainMenuHeader.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        mainMenuHeader.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        mainMenuHeader.setText("MAIN MENU");
+
+        roomsBTN.setBackground(new java.awt.Color(204, 255, 255));
+        roomsBTN.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        roomsBTN.setForeground(new java.awt.Color(0, 0, 0));
         roomsBTN.setText("Rooms");
         roomsBTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -45,6 +53,9 @@ public class MainMenu extends javax.swing.JPanel {
             }
         });
 
+        usersBTN.setBackground(new java.awt.Color(204, 255, 255));
+        usersBTN.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        usersBTN.setForeground(new java.awt.Color(0, 0, 0));
         usersBTN.setText("Users");
         usersBTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -59,25 +70,24 @@ public class MainMenu extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(173, 173, 173)
+                        .addGap(170, 170, 170)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(roomsBTN, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
                             .addComponent(usersBTN, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(165, 165, 165)
-                        .addComponent(mainMenuHeader, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(167, Short.MAX_VALUE))
+                        .addGap(47, 47, 47)
+                        .addComponent(mainMenuHeader, javax.swing.GroupLayout.PREFERRED_SIZE, 424, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(mainMenuHeader)
-                .addGap(97, 97, 97)
+                .addComponent(mainMenuHeader, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(96, 96, 96)
                 .addComponent(roomsBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(45, 45, 45)
-                .addComponent(usersBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(142, Short.MAX_VALUE))
+                .addGap(58, 58, 58)
+                .addComponent(usersBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(163, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

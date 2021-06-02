@@ -7,9 +7,12 @@ import java.util.logging.Logger;
 import ClientSide.*;
 import GUI.*;
 import Messages.CreatePersonelRoomMessage;
+import Messages.FileMessage;
 import Messages.RoomMessage;
+import Utilities.FileUtilities;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+
 /*
   To change this license header, choose License Headers in Project Properties.
   To change this template file, choose Tools | Templates
@@ -38,88 +41,121 @@ public class ClientListenThread extends Thread {
 
                 Message msg = (Message) (this.client.sInput.readObject());
                 switch (msg.type) {
-                    
+
                     case USERNAME_REACHED:
-                        System.out.println("Username reached.");
                         this.client.applicationFrame.changeMenu(this.client.applicationFrame.loginMenu,
-                                 this.client.applicationFrame.mainMenu);
-                        this.client.applicationFrame.mainMenu.mainMenuHeader.setText("Welcome "+msg.content.toString());
-                        
+                                this.client.applicationFrame.mainMenu);
+                        this.client.applicationFrame.mainMenu.mainMenuHeader.setText("Welcome " + msg.content.toString());
+
                         break;
                     case ALL_ROOMS:
-                        ArrayList<String> roomNames = (ArrayList<String>)msg.content;
+                        ArrayList<String> roomNames = (ArrayList<String>) msg.content;
                         this.client.applicationFrame.roomsMenu.UpdateRoomListWithGivenList(roomNames);
                         break;
 
                     case ROOM_CREATED:
                         String roomName = msg.content.toString();
                         this.client.applicationFrame.inRoomMenu.inRoomNameLBL.setText(roomName);
-                        this.client.applicationFrame.changeMenu(this.client.applicationFrame.roomsMenu, 
+                        this.client.applicationFrame.inRoomMenu.clearInRoom();
+                        this.client.applicationFrame.changeMenu(this.client.applicationFrame.roomsMenu,
                                 this.client.applicationFrame.inRoomMenu);
-                        
+
                         break;
                     case IN_ROOM_MESSAGE:
-                        RoomMessage roomMsg = (RoomMessage)msg.content;
-                        if(roomMsg.type == RoomMessage.RoomMessageType.TEXT)
-                        {
-                          this.client.applicationFrame.inRoomMenu.AddMessageToChat(roomMsg.senderName, roomMsg.content.toString());
+                        RoomMessage roomMsg = (RoomMessage) msg.content;
+                        if (roomMsg.type == RoomMessage.RoomMessageType.TEXT) {
+                            this.client.applicationFrame.inRoomMenu.AddMessageToChat(roomMsg.senderName, roomMsg.content.toString());
+
+                        } else if (roomMsg.type == RoomMessage.RoomMessageType.FILE) {
+                            String chatMessage = roomMsg.senderName + ": " + "Shared " + roomMsg.content.toString() + " Click to see download button!";
+                            this.client.applicationFrame.inRoomMenu.AddMessageToChat(chatMessage);
 
                         }
                         break;
                     case JOIN_ROOM:
                         String roomToBeJoined = msg.content.toString();
-                        if(roomToBeJoined.equals("No"))
-                        {
-                            JOptionPane.showMessageDialog(this.client.applicationFrame.roomsMenu,"Can not connected to the room" );
+                        if (roomToBeJoined.equals("No")) {
+                            JOptionPane.showMessageDialog(this.client.applicationFrame.roomsMenu, "Can not connected to the room");
                             return;
                         }
                         this.client.applicationFrame.inRoomMenu.inRoomNameLBL.setText(roomToBeJoined);
                         this.client.applicationFrame.changeMenu(this.client.applicationFrame.roomsMenu,
-                            this.client.applicationFrame.inRoomMenu);
+                                this.client.applicationFrame.inRoomMenu);
                         break;
                     case ALL_USERS:
-                        ArrayList<String> users = (ArrayList<String>)msg.content;
+                        ArrayList<String> users = (ArrayList<String>) msg.content;
                         this.client.applicationFrame.allUsersMenu.UpdateUserListWithGivenList(users);
                         break;
-                        
+
                     case ACCEPT_PERSONEL_ROOM:
-                        CreatePersonelRoomMessage cprm = (CreatePersonelRoomMessage)msg.content;
-                        int inputDialogue = JOptionPane.showConfirmDialog(null, "Do you want to chat with "+cprm.creator+" ?", 
+                        CreatePersonelRoomMessage cprm = (CreatePersonelRoomMessage) msg.content;
+                        int inputDialogue = JOptionPane.showConfirmDialog(null, "Do you want to chat with " + cprm.creator + " ?",
                                 "Personel Room Request", JOptionPane.YES_NO_OPTION);
                         String userAnswer;
-                        if(inputDialogue == 0)
-                        {
+                        if (inputDialogue == 0) {
                             userAnswer = cprm.joiner;
-                        }
-                        else
-                        {
+                        } else {
                             userAnswer = "NO";
                         }
                         cprm.joiner = userAnswer;
-                        
+
                         Message personelRoomAnswerMessage = new Message(Message.MessageTypes.ACCEPT_PERSONEL_ROOM);
                         personelRoomAnswerMessage.content = cprm;
                         this.client.Send(personelRoomAnswerMessage);
                         break;
                     case PERSONEL_ROOM_REJECTED:
                         JOptionPane.showMessageDialog(this.client.applicationFrame.allUsersMenu, "Personel Chat Rejected");
+                        this.client.applicationFrame.changeMenu(this.client.applicationFrame.personelRoomMenu,
+                                this.client.applicationFrame.allUsersMenu);
+                        Message refreshUserListMsg = new Message(Message.MessageTypes.ALL_USERS);
+                        this.client.Send(refreshUserListMsg);
                         break;
-                        
+
                     case PERSONEL_ROOM_ACCEPTED:
-                        String userToChat = (String)msg.content;
-                        this.client.applicationFrame.personelRoomMenu.personelRoomHeaderLBL.setText("Chat With "+userToChat);
+                        String userToChat = (String) msg.content;
+                        this.client.applicationFrame.personelRoomMenu.personelRoomHeaderLBL.setText("Chat With " + userToChat);
+                        this.client.applicationFrame.personelRoomMenu.clearPersonelRoom();
                         this.client.applicationFrame.changeMenu(this.client.applicationFrame.allUsersMenu,
                                 this.client.applicationFrame.personelRoomMenu);
-                        
                         break;
                     case PERSONEL_ROOM_MESSAGE:
-                        RoomMessage rm = (RoomMessage)msg.content;
-                        if(rm.type == RoomMessage.RoomMessageType.TEXT)
-                        {
-                           this.client.applicationFrame.personelRoomMenu.AddTextMessageToChat(rm.senderName,rm.content.toString());
-                           break;
+                        RoomMessage rm = (RoomMessage) msg.content;
+                        if (rm.type == RoomMessage.RoomMessageType.TEXT) {
+                            this.client.applicationFrame.personelRoomMenu.AddTextMessageToChat(rm.senderName, rm.content.toString());
+                            break;
+                        } else if (rm.type == RoomMessage.RoomMessageType.FILE) {
+                            String chatMessage = rm.senderName + ": " + "Shared " + rm.content.toString() + " Click to see download button!";
+                            this.client.applicationFrame.personelRoomMenu.AddTextMessageToChat(chatMessage);
                         }
-                       break;
+                        break;
+
+                    case FILE_UPLOADED:
+                        String isUploaded = (String) msg.content;
+                        if (isUploaded.equals("YES")) {
+                            JOptionPane.showMessageDialog(null, "File uploaded successfully");
+                        } else {
+                            JOptionPane.showMessageDialog(null, "File couldn't uploaded");
+                        }
+                        break;
+
+                    case DOWNLOAD_FILE_REQUEST:
+                        System.out.println("File geldi");
+                        FileMessage downloadedFileMessage = (FileMessage) msg.content;
+                        String filePath = FileUtilities.createFileWithGivenName(this.client.userName+downloadedFileMessage.fileName);
+                        if (FileUtilities.writeContentToFileOnGivenFilePath(filePath, downloadedFileMessage.content)) {
+                            JOptionPane.showMessageDialog(null, "File downloaded successfully!");
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Download Failed!");
+                        }
+                        break;
+                    case PERSONEL_ROOM_DISPERSED:
+                        JOptionPane.showMessageDialog(null, "Personel room dispersed");
+                        this.client.applicationFrame.changeMenu(this.client.applicationFrame.personelRoomMenu, this.client.applicationFrame.mainMenu);
+                        break;
+                        
+                    case LEFT_FROM_ROOM:    
+                        JOptionPane.showMessageDialog(null, "You left from room.");
+                        this.client.applicationFrame.changeMenu(null, this.client.applicationFrame.mainMenu);
                 }
 
             } catch (IOException ex) {

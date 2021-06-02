@@ -41,6 +41,7 @@ public class ChattApp extends javax.swing.JFrame {
     }
 
     public void changeMenu(JPanel from, JPanel to) {
+        
         this.remove(roomsMenu);
         this.remove(loginMenu);
         this.remove(mainMenu);
@@ -51,6 +52,7 @@ public class ChattApp extends javax.swing.JFrame {
 
         this.add(to);
         this.revalidate();
+        this.repaint();
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -69,6 +71,8 @@ public class ChattApp extends javax.swing.JFrame {
         setMinimumSize(new java.awt.Dimension(600, 600));
 
         jLabel1.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(204, 204, 255)));
+        jLabel1.setMaximumSize(new java.awt.Dimension(500, 500));
+        jLabel1.setMinimumSize(new java.awt.Dimension(500, 500));
         getContentPane().add(jLabel1, java.awt.BorderLayout.CENTER);
 
         pack();
