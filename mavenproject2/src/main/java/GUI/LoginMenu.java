@@ -102,12 +102,17 @@ public class LoginMenu extends javax.swing.JPanel {
     }//GEN-LAST:event_userNameINPActionPerformed
 
     private void loginBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginBTNActionPerformed
+        ///control user name -----
+        //...
         String userName = userNameINP.getText().toString();
         if(userName.isEmpty())
         {
             JOptionPane.showMessageDialog(null, "You need to input a username");
             return;
         }
+        //...
+        //finish control user name ----
+        //then send a message to server type of username to save client's user name on server.
         Message message = new Message(Message.MessageTypes.USERNAME);
         message.content = userName;
         this.mainFrame.client.Send(message);

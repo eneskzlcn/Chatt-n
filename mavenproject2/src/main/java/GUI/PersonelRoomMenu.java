@@ -30,12 +30,12 @@ public class PersonelRoomMenu extends javax.swing.JPanel {
         chatPanelModel = new DefaultListModel();
         this.personelRoomChatJL.setModel(chatPanelModel);
     }
-
+    //add text message formatted to the chat.
     public void AddTextMessageToChat(String senderName, String content) {
         String message = senderName + ": " + content;
         chatPanelModel.addElement(message);
     }
-
+    //add message directly to the chat
     public void AddTextMessageToChat(String message) {
         chatPanelModel.addElement(message);
     }
@@ -143,11 +143,16 @@ public class PersonelRoomMenu extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void personelRoomMessageSendBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_personelRoomMessageSendBTNActionPerformed
-        // TODO add your handling code here:
+        // this buttons sends given inp text to the personel room chat.
+        //control input
+        //...
         String textMessageINP = personelRoomMessageINP.getText().toString();
         if (textMessageINP.isBlank()) {
             return;
         }
+        //...
+        //finish control input
+        // then create a personel room message and send to server.
         RoomMessage roomMsg = new RoomMessage("personel",
                 this.mainFrame.client.userName, RoomMessage.RoomMessageType.TEXT, textMessageINP);
         Message msg = new Message(Message.MessageTypes.PERSONEL_ROOM_MESSAGE);
@@ -155,7 +160,8 @@ public class PersonelRoomMenu extends javax.swing.JPanel {
         this.mainFrame.client.Send(msg);
         this.personelRoomMessageINP.setText("");
     }//GEN-LAST:event_personelRoomMessageSendBTNActionPerformed
-
+    
+    // if a message contains text below , it is a downloadable text.
     public boolean isMessageDownloadsFile(String message) {
         if (message.contains("Click to see download button!")) {
             return true;
@@ -167,7 +173,9 @@ public class PersonelRoomMenu extends javax.swing.JPanel {
         return userMessage.split(" ")[2];
     }
     private void personelRoomChatJLMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_personelRoomChatJLMouseClicked
-        // TODO add your handling code here:
+        // if a downloadable message is clicked on list, then shows a input dialogue
+        //if user wants to download the file or not.
+        //if it is yes, send a download file request to server.
         String userMessage = personelRoomChatJL.getSelectedValue();
         if (userMessage == null) {
             return;

@@ -21,6 +21,8 @@ public class AllUsersMenu extends javax.swing.JPanel {
      */
     ChattApp mainFrame;
     DefaultListModel userListModel;
+
+    //this panel is represents all user menu . Which list the users on server and , services to start messaging with hem
     public AllUsersMenu(ChattApp mainFrame) {
         initComponents();
         this.mainFrame = mainFrame;
@@ -28,12 +30,13 @@ public class AllUsersMenu extends javax.swing.JPanel {
         this.allUsersJL.setModel(userListModel);
     }
     
-    public void UpdateUserListWithGivenList(ArrayList<String> userNames)
-    {
+    //updates the all users list with given list.
+    public void UpdateUserListWithGivenList(ArrayList<String> userNames) {
         userListModel.removeAllElements();
-        for(String name : userNames)
-        {
-            if(name.isBlank() || name.equals(this.mainFrame.client.userName)) continue;
+        for (String name : userNames) {
+            if (name.isBlank() || name.equals(this.mainFrame.client.userName)) {
+                continue;
+            }
             userListModel.addElement(name);
         }
     }
@@ -54,7 +57,7 @@ public class AllUsersMenu extends javax.swing.JPanel {
         refreshBTN = new javax.swing.JButton();
         returnMenuBTN = new javax.swing.JButton();
         startMessageBTN = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        returnBTN = new javax.swing.JButton();
 
         setMaximumSize(new java.awt.Dimension(500, 500));
         setMinimumSize(new java.awt.Dimension(500, 500));
@@ -96,13 +99,13 @@ public class AllUsersMenu extends javax.swing.JPanel {
             }
         });
 
-        jButton1.setBackground(new java.awt.Color(204, 255, 255));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(0, 0, 0));
-        jButton1.setText("Return");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        returnBTN.setBackground(new java.awt.Color(204, 255, 255));
+        returnBTN.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        returnBTN.setForeground(new java.awt.Color(0, 0, 0));
+        returnBTN.setText("Return");
+        returnBTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                returnBTNActionPerformed(evt);
             }
         });
 
@@ -131,7 +134,7 @@ public class AllUsersMenu extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(184, 184, 184)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(returnBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(returnMenuBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(68, Short.MAX_VALUE))
         );
@@ -149,7 +152,7 @@ public class AllUsersMenu extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addComponent(startMessageBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(94, 94, 94)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(returnBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(828, 828, 828)
                 .addComponent(startPersonalMessagingBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -159,19 +162,21 @@ public class AllUsersMenu extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void refreshBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBTNActionPerformed
-        // TODO add your handling code here:
+        // when refresh button is clicked, send server to request for all users.
         Message message = new Message(Message.MessageTypes.ALL_USERS);
         this.mainFrame.client.Send(message);
     }//GEN-LAST:event_refreshBTNActionPerformed
 
     private void startPersonalMessagingBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startPersonalMessagingBTNActionPerformed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_startPersonalMessagingBTNActionPerformed
 
     private void startMessageBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startMessageBTNActionPerformed
-        // TODO add your handling code here:
-         if(allUsersJL.getSelectedValue() == null) return;
+        // when start messagin clicked. Send server a create personel room request.
+        if (allUsersJL.getSelectedValue() == null) {
+            return;
+        }
         CreatePersonelRoomMessage cprm = new CreatePersonelRoomMessage();
         cprm.creator = this.mainFrame.client.userName;
         cprm.joiner = allUsersJL.getSelectedValue().toString();
@@ -180,18 +185,18 @@ public class AllUsersMenu extends javax.swing.JPanel {
         this.mainFrame.client.Send(message);
     }//GEN-LAST:event_startMessageBTNActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void returnBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_returnBTNActionPerformed
         // TODO add your handling code here:
         this.mainFrame.changeMenu(this.mainFrame.allUsersMenu, this.mainFrame.mainMenu);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_returnBTNActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList<String> allUsersJL;
     private javax.swing.JLabel allUsersMenuHeaderLBL;
-    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton refreshBTN;
+    private javax.swing.JButton returnBTN;
     private javax.swing.JButton returnMenuBTN;
     private javax.swing.JButton startMessageBTN;
     private javax.swing.JButton startPersonalMessagingBTN;

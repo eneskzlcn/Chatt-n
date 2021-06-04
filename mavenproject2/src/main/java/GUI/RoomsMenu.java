@@ -69,7 +69,7 @@ public class RoomsMenu extends javax.swing.JPanel {
 
         roomsMenuLBL.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         roomsMenuLBL.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        roomsMenuLBL.setText("Room Name");
+        roomsMenuLBL.setText("Rooms");
 
         jScrollPane2.setViewportView(roomList);
 
@@ -165,17 +165,18 @@ public class RoomsMenu extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
                 .addComponent(returnMainMenuBTN)
                 .addGap(36, 36, 36))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(roomsMenuLBL, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(138, 138, 138))
             .addGroup(layout.createSequentialGroup()
-                .addGap(53, 53, 53)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(joinRoomBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(refreshRoomListBTN))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(53, 53, 53)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(26, 26, 26)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(refreshRoomListBTN)
+                            .addComponent(joinRoomBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(108, 108, 108)
+                        .addComponent(roomsMenuLBL, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -202,12 +203,17 @@ public class RoomsMenu extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void createNewRoomBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createNewRoomBTNActionPerformed
-        // TODO add your handling code here:
+        // when this button is clicked, a new room will be created on server.
+        //control input
+        //...
         if(newRoomNameINP.getText().isEmpty())
         {
             JOptionPane.showMessageDialog(null, "Room name can not be empty!");
             return;
         }
+        //...
+        //finish control input
+        //create message for create rooom and send to the server.
         CreateRoomMessage crm = new CreateRoomMessage(this.mainFrame.client.userName,newRoomNameINP.getText().toString());
         Message message = new Message(Message.MessageTypes.CREATE_ROOM);
         message.content = crm;
@@ -215,19 +221,21 @@ public class RoomsMenu extends javax.swing.JPanel {
     }//GEN-LAST:event_createNewRoomBTNActionPerformed
 
     private void refreshRoomListBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshRoomListBTNActionPerformed
-        // TODO add your handling code here:
+        // when this buton is clicked all rooms message send to server to refresh list
+        //with new rooms.
         Message message = new Message(Message.MessageTypes.ALL_ROOMS);
         this.mainFrame.client.Send(message);
     }//GEN-LAST:event_refreshRoomListBTNActionPerformed
 
     private void returnMainMenuBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_returnMainMenuBTNActionPerformed
+        //if return button is clicked then go backto main menu.
         newRoomNameINP.setText("");
         roomsModel.removeAllElements();
         this.mainFrame.changeMenu(this.mainFrame.roomsMenu,this.mainFrame.mainMenu);
     }//GEN-LAST:event_returnMainMenuBTNActionPerformed
 
     private void joinRoomBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_joinRoomBTNActionPerformed
-        // TODO add your handling code here:
+        // if this button is clicked, then a join room request sends to server .
         if(roomList.getSelectedValue() == null)return;
         System.out.println("Selected Value is not empty");
         String chosenRoom = roomList.getSelectedValue();

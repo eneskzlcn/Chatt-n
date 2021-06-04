@@ -92,7 +92,9 @@ public class MainMenu extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void roomsBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roomsBTNActionPerformed
-        // TODO add your handling code here:
+        // when rooms button clicked, 
+        //send all rooms message to server to take all rooms in server and list them in roomsMenu
+        //then opens the room menu
         Message msg = new Message(Message.MessageTypes.ALL_ROOMS);
         
         this.mainFrame.client.Send(msg);
@@ -101,7 +103,9 @@ public class MainMenu extends javax.swing.JPanel {
     }//GEN-LAST:event_roomsBTNActionPerformed
 
     private void usersBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usersBTNActionPerformed
-        // TODO add your handling code here:
+        // when users button clicked,
+        //send all user message to server to take all users on server and list them in usersMenu
+        // then open the users menu.
         Message message = new Message(Message.MessageTypes.ALL_USERS);
         this.mainFrame.client.Send(message);
         this.mainFrame.changeMenu(this.mainFrame.mainMenu, this.mainFrame.allUsersMenu);

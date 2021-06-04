@@ -21,18 +21,20 @@ public class InRoomMenu extends javax.swing.JPanel {
      */
     ChattApp mainFrame;
     DefaultListModel messageList;
+    //this panel represents in room menu. When a user enters a menu this menu opens to chat with others
     public InRoomMenu(ChattApp mainFrame) {
         initComponents();
         this.mainFrame = mainFrame;
         this.messageList = new DefaultListModel();
         this.inRoomChatPanelJL.setModel(messageList);
     }
-
+    //add a text message to chat formatted.
     public void AddMessageToChat(String senderName, String content)
     {
         String message = senderName + ": "+content;
         messageList.addElement(message);
     }
+    // add any message to chat directly
     public void AddMessageToChat(String message)
     {
         messageList.addElement(message);
@@ -140,7 +142,8 @@ public class InRoomMenu extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void leaveRoomBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_leaveRoomBTNActionPerformed
-        // TODO add your handling code here:
+        // when leave room button clicked, new room message will be creaeted with type of LEAVE and send to the server
+        // then because of the returning allrooms menu, also send server a message for all updated rooms list in server.
         
         RoomMessage leaveRoomMsg = new RoomMessage(this.inRoomNameLBL.getText().toString(),this.mainFrame.client.userName,RoomMessage.RoomMessageType.LEAVE,null);
         Message leaveMsg  = new Message(Message.MessageTypes.IN_ROOM_MESSAGE);
@@ -159,7 +162,9 @@ public class InRoomMenu extends javax.swing.JPanel {
         this.inRoomMessageINP.setText("");
     }
     private void inRoomSendTextMessageBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inRoomSendTextMessageBTNActionPerformed
-        // TODO add your handling code here:
+        // This is for sending text message to the room.
+        // When you click this button, a in room message sending to server and server sends this message every clients in room
+        
         String textMessageINP = inRoomMessageINP.getText().toString();
         String roomName = inRoomNameLBL.getText().toString();
         if(textMessageINP.isBlank())
@@ -175,7 +180,7 @@ public class InRoomMenu extends javax.swing.JPanel {
     }//GEN-LAST:event_inRoomSendTextMessageBTNActionPerformed
 
     private void inRoomSendFileBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inRoomSendFileBTNActionPerformed
-        // TODO add your handling code here:
+        // When this button clicked, user chooses a file from jfilechooser and send upload request to the server.
         String chosenFilePath = FileUtilities.chooseFileAndGetItsPath();
 
         String nameOfChosenFile = FileUtilities.getNameOfFileOnGivenPath(chosenFilePath);
@@ -192,19 +197,21 @@ public class InRoomMenu extends javax.swing.JPanel {
         this.mainFrame.client.Send(message);
     }//GEN-LAST:event_inRoomSendFileBTNActionPerformed
 
+    //this is for control is it a download message. If it contains the bottom string, it is a download message.
      public boolean isMessageDownloadsFile(String message) {
         if (message.contains("Click to see download button!")) {
             return true;
         }
         return false;
     }
-
+     // the file name every time stands on 2 index when the message splitted by whitespace
     public String getFileNameFromMessageByGivenType(String userMessage) {
         return userMessage.split(" ")[2];
     }
     
     private void inRoomChatPanelJLMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inRoomChatPanelJLMouseClicked
-        // TODO add your handling code here:
+        // if the clicked message on list is a downloadable message then show a input dialog to download or not.
+        // if it is yes , then download request goes to server.
          String userMessage = inRoomChatPanelJL.getSelectedValue();
         if (userMessage == null) {
             return;

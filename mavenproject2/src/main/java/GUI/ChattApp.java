@@ -24,11 +24,11 @@ public class ChattApp extends javax.swing.JFrame {
     public AllUsersMenu allUsersMenu;
     public PersonelRoomMenu personelRoomMenu;
     public Client client;
-  
 
     public ChattApp() {
         initComponents();
         client = new Client(this);
+        //client.Connect("52.14.58.26", 4000);
         client.Connect("127.0.0.1", 4000);
         loginMenu = new LoginMenu(this);
         mainMenu = new MainMenu(this);
@@ -40,6 +40,7 @@ public class ChattApp extends javax.swing.JFrame {
 
     }
 
+    //this function provides changing menu from anywhere to anywhere.
     public void changeMenu(JPanel from, JPanel to) {
         
         this.remove(roomsMenu);
@@ -51,8 +52,9 @@ public class ChattApp extends javax.swing.JFrame {
         this.remove(personelRoomMenu);
 
         this.add(to);
-        this.revalidate();
         this.repaint();
+        this.revalidate();
+       
     }
     /**
      * This method is called from within the constructor to initialize the form.
