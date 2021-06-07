@@ -2,8 +2,6 @@ package ClientSide;
 
 import Messages.Message;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import ClientSide.*;
 import Messages.CreatePersonelRoomMessage;
 import Messages.FileMessage;
